@@ -1,8 +1,34 @@
 package main
 
-import "net/http"
+import (
+	"log"
+
+	"authorization/backend/controllers"
+	"authorization/backend/initializers"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+)
+
+func init() {
+	log.Println("Initializing database connection...")
+	initializers.ConnectToDb()
+	log.Println("Running database migrations...")
+	initializers.SyncDb()
+}
 
 func main() {
-	http.Handle("/signin", withCORS(http.HandlerFunc(SignupHandler)))
-	http.ListenAndServe(":3000",nil)
+	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3001"}, // Adjust this to your frontend's origin
+		AllowMethods:     []string{"POST", "GET", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+		AllowCredentials: true,
+	}))
+
+	// Define the /signin route
+	router.POST("/signup", controllers.SignUp)
+
+	// Run the server on port 3000
+	router.Run(":3000")
 }

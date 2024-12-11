@@ -5,7 +5,7 @@ function LandingPage() {
   return (
     <div>
 <h1>Landing page</h1>
-<Link href="/signin" className="nav-link">Sign In</Link>
+<Link href="/signup" className="nav-link">Sign In</Link>
     </div>
   
   )
