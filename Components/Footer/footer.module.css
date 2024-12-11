@@ -1,0 +1,8 @@
+
+.footerdiv{
+   display: flex;
+   flex-direction: column;
+   align-content: center;
+   position: absolute;
+   bottom: 0;
+}

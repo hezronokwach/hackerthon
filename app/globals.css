@@ -1,21 +1,130 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Global styles for the HTML body */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: 'Nunito', sans-serif;
+  background-color: #f2f2f2;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header styles */
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header a {
+  color: #333;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+header a:hover {
+  text-decoration: underline;
+}
+
+/* Content styles */
+.content {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Navigation styles */
+nav {
+  margin: 10px auto 80px;
+  padding: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  border-bottom: 1px solid #ddd;
+}
+
+nav a {
+  margin-left: 12px;
+}
+
+nav .logo {
+  margin-right: auto;
+}
+
+/* Footer styles */
+.footerdiv {
+  display: block;
+  text-align: center;
+  padding: 30px 0;
+  margin-top: 60px;
+  color: #777;
+  border-top: 1px solid #eaeaea;
+  background-color: #333;
+  color: #fff;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+.footerdiv p {
+  margin: 0;
+}
+
+.footerdiv ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.footerdiv li {
+  cursor: pointer;
+}
+
+.footerdiv li:hover {
+  text-decoration: underline;
+}
+
+.footerdiv {
+  display: block;
+  text-align: center;
+  padding: 30px 0;
+  margin-top: 60px;
+  color: #777;
+  border-top: 1px solid #eaeaea;
+  background-color: #333;
+  color: #fff;
+  position: fixed; /* Changed from absolute to fixed */
+  width: 100%;
+  bottom: 0;
+}
+
+.footerdiv ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-between; /* Distribute space evenly */
+  align-items: center; /* Center items vertically */
+  gap: 5px; /* Space between items */
+  max-width: 960px; /* Optional: limit the width for better layout */
+  margin: 0 auto; /* Center the list within the footer */
+}
+
+.footerdiv li {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footerdiv li:hover {
+  text-decoration: underline;
+  color: #ddd; /* Optional: change color on hover */
+}
+
+/* Main content styles */
+main {
+  padding: 20px;
+  min-height: calc(100vh - 160px); /* Adjust based on header and footer height */
 }
