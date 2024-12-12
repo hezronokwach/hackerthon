@@ -62,7 +62,7 @@ func Login(c *gin.Context) {
 
 func Satelitte(c *gin.Context) {
 	var satellite struct {
-		ID                string    `json:"satelliteID"`
+		ID                string `json:"satelliteID"`
 		SatelitteName     string `json:"satelliteName"`
 		SatelitteLocation string `json:"satelliteLocation"`
 		ContactPerson     string `json:"contactPerson"`
@@ -75,14 +75,14 @@ func Satelitte(c *gin.Context) {
 	}
 
 	satellite1 := models.Satelitte{
-		SatelitteID: satellite.ID,		
+		SatelitteID:       satellite.ID,
 		SatelitteName:     satellite.SatelitteName,
 		SatelitteLocation: satellite.SatelitteLocation,
 		ContactPerson:     satellite.ContactPerson,
 		ContactEmail:      satellite.ContactEmail,
 		ContactPassword:   satellite.ContactPassword,
 	}
-fmt.Println("satelitte id",satellite.ID)
+	fmt.Println("satelitte id", satellite.ID)
 	if err := initializers.DB.Create(&satellite1).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
 		return
@@ -93,11 +93,11 @@ fmt.Println("satelitte id",satellite.ID)
 func SatelitteLogin(c *gin.Context) {
 	var user models.Satelitte
 	var SatelitteInput struct {
-		ID       string    `json:"satelitteID"`
+		ID       string `json:"satelitteID"`
 		Email    string `json:"email" binding:"required"`
 		Password string `json:"password" binding:"required"`
 	}
-	fmt.Println("id",SatelitteInput.ID)
+	fmt.Println("id", SatelitteInput.ID)
 	if err := c.ShouldBindJSON(&SatelitteInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid input"})
 		return
