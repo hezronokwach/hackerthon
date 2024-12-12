@@ -24,7 +24,7 @@ export default function Login() {
             localStorage.setItem('userID', data.userID);
             setMessage({ type: "success", text: data.message });
             setTimeout(() => {
-                window.location.href = '/donorPage';
+                window.location.href = `/donorPage/${data.userID}`;
             }, 1000);
         } else {
             setMessage({ type: "error", text: data.message });
