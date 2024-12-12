@@ -10,3 +10,12 @@ type User struct {
 	FirstName   string
 	LastName    string
 }
+
+type Satelitte struct{
+	gorm.Model
+	SatelitteName string
+	SatelitteLocation string
+	ContactPerson string
+	ContactEmail string
+	ContactPassword string	
+}

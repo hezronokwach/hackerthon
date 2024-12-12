@@ -27,7 +27,11 @@ func main() {
 	}))
 
 	// Define the /signin route
-	router.POST("/signup", controllers.SignUp)
+	router.POST("/signup", controllers.SignUp)	
+	router.POST("/login", controllers.Login)
+	router.POST("/satellite", controllers.Satelitte)
+
+
 
 	// Run the server on port 3000
 	router.Run(":3000")
