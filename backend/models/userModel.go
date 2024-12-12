@@ -13,7 +13,8 @@ type User struct {
 
 type Satelitte struct {
 	gorm.Model
-	SatelitteName     string
+	SatelitteID string
+	SatelitteName string
 	SatelitteLocation string
 	ContactPerson     string
 	ContactEmail      string

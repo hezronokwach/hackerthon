@@ -2,24 +2,23 @@
 import { useState } from 'react';
 
 export default function SatelitteSignUp() {
+    const [satelliteID, setsatelliteID] = useState('');
     const [satelliteName, setsatelliteName] = useState('');
     const [satelliteLocation, setsatelliteLocation] = useState('');
     const [contactPerson, setcontactPerson] = useState('');
     const [contactEmail, setcontactEmail] = useState('');
     const [contactPassword, setcontactPassword] = useState('');
     const [message, setMessage] = useState(null);
-
-    
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+    
         try {
             const response = await fetch('http://localhost:3000/satellite', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ satelliteName, satelliteLocation, contactPerson, contactEmail, contactPassword}),
+                body: JSON.stringify({satelliteID, satelliteName, satelliteLocation, contactPerson, contactEmail, contactPassword}),
             });
 
             const data = await response.json();
@@ -40,6 +39,10 @@ export default function SatelitteSignUp() {
     return (
         <>
             <form onSubmit={handleSubmit}>
+            <div>
+                    <label>Satellite ID</label>
+                    <input type="text" value={satelliteID} onChange={e => setsatelliteID(e.target.value)} required />
+                </div>
                 <div>
                     <label>Satellite name</label>
                     <input type="text" value={satelliteName} onChange={e => setsatelliteName(e.target.value)} required />
