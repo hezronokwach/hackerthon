@@ -25,7 +25,7 @@ export default function Login() {
             if (response.ok) {
                 setMessage({ type: "success", text: data.message });
                 setTimeout(() => {
-                    window.location.href = '/'; // Redirect using window.location
+                    window.location.href = '/satelitteDashboard/add'; // Redirect using window.location
                 }, 1000);
             } else {
                 setMessage({ type: "error", text: data.message });
