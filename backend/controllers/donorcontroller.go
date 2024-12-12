@@ -12,11 +12,11 @@ import (
 
 func DonateBlood(c *gin.Context) {
 	var donorInput struct {
-		FirstName   string `json:"firstName" binding:"required"`
-		LastName    string `json:"lastName" binding:"required"`
-		Email       string `json:"email" binding:"required,email"`
-		PhoneNumber string `json:"phoneNumber"`
-		SatelliteID uint   `json:"satelliteId" binding:"required"`
+		UserID       string `json:"userID"`
+		DonationDate string `json:"donationDate" `
+		BloodType    string `json:"bloodType"`
+		Status       string `json:"status"`
+		SatelliteID  string `json:"satelliteId"`
 	}
 
 	if err := c.ShouldBindJSON(&donorInput); err != nil {
@@ -25,11 +25,11 @@ func DonateBlood(c *gin.Context) {
 	}
 
 	donor := models.Donor{
-		FirstName:   donorInput.FirstName,
-		LastName:    donorInput.LastName,
-		Email:       donorInput.Email,
-		PhoneNumber: donorInput.PhoneNumber,
-		SatelliteID: donorInput.SatelliteID,
+		UserID:       donorInput.UserID,
+		DonationDate: donorInput.DonationDate,
+		BloodType:    donorInput.BloodType,
+		Status:       donorInput.Status,
+		SatelliteID:  donorInput.SatelliteID,
 	}
 
 	if err := initializers.DB.Create(&donor).Error; err != nil {

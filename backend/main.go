@@ -31,6 +31,10 @@ func main() {
 	router.POST("/login", controllers.Login)
 	router.POST("/satellite", controllers.Satelitte)
 	router.POST("/satelitteLogin", controllers.SatelitteLogin)
+	router.POST("/satelitteDashboard/add", controllers.DonateBlood)
+	router.GET("/region", controllers.Region)
+
+
 
 
 	// Run the server on port 3000

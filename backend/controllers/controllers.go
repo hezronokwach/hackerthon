@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"authorization/backend/initializers"
@@ -12,6 +13,7 @@ import (
 
 func SignUp(c *gin.Context) {
 	var SignupInput struct {
+		UserID      string `json:"userID"`
 		Email       string `json:"email" binding:"required"`
 		Password    string `json:"password" binding:"required"`
 		PhoneNumber string `json:"phoneNumber"`
@@ -24,6 +26,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	user := models.User{
+		UserID:      SignupInput.UserID,
 		Email:       SignupInput.Email,
 		Password:    SignupInput.Password,
 		PhoneNumber: SignupInput.PhoneNumber,
@@ -113,4 +116,31 @@ func SatelitteLogin(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Login successfully"})
+}
+
+func Region(c *gin.Context) {
+	// Ensure the DB is migrated (ideally done at app startup)
+	if err := initializers.DB.AutoMigrate(&models.Regional{}); err != nil {
+		log.Printf("Migration failed: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Database migration failed"})
+		return
+	}
+
+	regional := models.Regional{
+		SatelitteID:       "25",
+		SatelitteName:     "satel",
+		SatelitteLocation: "satellite.SatelitteLocation",
+		ContactPerson:     "satellite.ContactPerson",
+		ContactEmail:      "satellite.ContactEmail",
+		ContactPassword:   "satellite.ContactPassword",
+	}
+
+
+	if err := initializers.DB.Create(&regional).Error; err != nil {
+		log.Printf("Error creating regional record: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
 }

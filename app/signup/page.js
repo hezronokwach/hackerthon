@@ -2,7 +2,10 @@
 import { useState } from 'react';
 
 export default function SignUp() {
+    const [userID, setUserID] = useState('');
+
     const [email, setEmail] = useState('');
+
     const [password, setPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -17,7 +20,7 @@ export default function SignUp() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password, phoneNumber, firstName, lastName }),
+                body: JSON.stringify({ userID,email, password, phoneNumber, firstName, lastName }),
             });
 
             const data = await response.json();
@@ -39,6 +42,10 @@ export default function SignUp() {
         <>
             <form onSubmit={handleSubmit}>
                 <div>
+                <div>
+                    <label>User ID</label>
+                    <input type="text" value={userID} onChange={e => setUserID(e.target.value)} required />
+                </div>
                 <div>
                     <label>First Name</label>
                     <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} required />
