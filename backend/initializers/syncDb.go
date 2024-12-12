@@ -15,3 +15,4 @@ func SyncDb() {
 	}
 	log.Println("Database migration completed successfully")
 }
+
