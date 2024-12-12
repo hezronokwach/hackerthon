@@ -39,6 +39,14 @@ export default function SignUp() {
         <>
             <form onSubmit={handleSubmit}>
                 <div>
+                <div>
+                    <label>First Name</label>
+                    <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} required />
+                </div>
+                <div>
+                    <label>Last Name</label>
+                    <input type="text" value={lastName} onChange={e => setLastName(e.target.value)} required />
+                </div>
                     <label>Email</label>
                     <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
                 </div>
@@ -50,14 +58,6 @@ export default function SignUp() {
                 <div>
                     <label>Phone Number</label>
                     <input type="text" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
-                </div>
-                <div>
-                    <label>First Name</label>
-                    <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} required />
-                </div>
-                <div>
-                    <label>Last Name</label>
-                    <input type="text" value={lastName} onChange={e => setLastName(e.target.value)} required />
                 </div>
                 <button type="submit">Submit</button>
             </form>
