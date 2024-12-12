@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 
-export default function DonorForm (){
+
+export default function DonorForm() {
     const [userID, setuserID] = useState('');
     const [donationDate, setdonationDate] = useState('');
     const [bloodType, setbloodType] = useState('');
@@ -11,50 +12,34 @@ export default function DonorForm (){
     const [responseMessage, setResponseMessage] = useState('');
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        const response = await fetch('http://localhost:3000/satelitteDashboard/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                userID,
-                donationDate,
-                bloodType,
-                status,
-                satelliteId
-            }),
-        });       
+        e.preventDefault();
+        try {
+            const response = await fetch('http://localhost:3000/satelitteDashboard/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userID,
+                    donationDate,
+                    bloodType,
+                    status,
+                    satelliteId
+                }),
+            });
 
-        const data = await response.json();
-        if (response.ok) {
-            // Get existing donations or initialize empty array
-            const existingDonations = JSON.parse(localStorage.getItem('allDonations') || '[]');
-            
-            // Add new donation to array
-            const newDonation = {
-                userID,
-                donationDate,
-                bloodType,
-                status,
-                satelliteId
-            };
-            existingDonations.push(newDonation);
-            
-            // Save updated donations array
-            localStorage.setItem('allDonations', JSON.stringify(existingDonations));
-            
-            setResponseMessage({ type: "success", text: "Donation recorded successfully!" });
-            setTimeout(() => {
-                window.location.href = '/donor/tracking';
-            }, 1000);
+            const data = await response.json();
+            if (response.ok) {
+                setResponseMessage({ type: "success", text: "Donation recorded successfully!" });
+                setTimeout(() => {
+                    window.location.href = `/donorPage/${userID}`;
+                }, 1000);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setResponseMessage('An error occurred. Please try again.');
         }
-    } catch (error) {
-        console.error('Error:', error);
-        setResponseMessage('An error occurred. Please try again.');
-    }
-};
+    };
 
     return (
         <>

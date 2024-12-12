@@ -7,30 +7,32 @@ export default function Login() {
     const [message, setMessage] = useState(null);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password}),
-            });
+    e.preventDefault();
+    try {
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (response.ok) {
-                setMessage({ type: "success", text: data.message });
-                setTimeout(() => {
-                    window.location.href = '/donorPage'; // Redirect using window.location
-                }, 1000);
-            } else {
-                setMessage({ type: "error", text: data.message });
-            }
-        } catch (error) {
-            setMessage({ type: "error", text: "An error occurred. Please try again." });
+        if (response.ok) {
+            // Store the userID returned from the backend
+            localStorage.setItem('userID', data.userID);
+            setMessage({ type: "success", text: data.message });
+            setTimeout(() => {
+                window.location.href = '/donorPage';
+            }, 1000);
+        } else {
+            setMessage({ type: "error", text: data.message });
         }
-    };
+    } catch (error) {
+        setMessage({ type: "error", text: "An error occurred. Please try again." });
+    }
+};
 
     return (
         <>

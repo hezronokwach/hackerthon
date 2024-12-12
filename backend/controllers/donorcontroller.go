@@ -9,7 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
+//donorform
 func DonateBlood(c *gin.Context) {
 	var donorInput struct {
 		UserID       string `json:"userID"`

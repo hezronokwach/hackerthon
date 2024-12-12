@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"authorization/backend/initializers"
@@ -40,7 +39,7 @@ func SignUp(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
 }
-
+//user login
 func Login(c *gin.Context) {
 	var user models.User
 	var LoginInput struct {
@@ -60,7 +59,10 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Login successfully"})
+	c.JSON(http.StatusOK, gin.H{
+        "message": "Login successful",
+        "userID": user.UserID,
+    })
 }
 
 func Satelitte(c *gin.Context) {
@@ -118,29 +120,57 @@ func SatelitteLogin(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Login successfully"})
 }
 
-func Region(c *gin.Context) {
-	// Ensure the DB is migrated (ideally done at app startup)
-	if err := initializers.DB.AutoMigrate(&models.Regional{}); err != nil {
-		log.Printf("Migration failed: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Database migration failed"})
-		return
-	}
+// func Region(c *gin.Context) {
+// 	// Ensure the DB is migrated (ideally done at app startup)
+// 	if err := initializers.DB.AutoMigrate(&models.Regional{}); err != nil {
+// 		log.Printf("Migration failed: %v", err)
+// 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Database migration failed"})
+// 		return
+// 	}
 
-	regional := models.Regional{
-		SatelitteID:       "25",
-		SatelitteName:     "satel",
-		SatelitteLocation: "satellite.SatelitteLocation",
-		ContactPerson:     "satellite.ContactPerson",
-		ContactEmail:      "satellite.ContactEmail",
-		ContactPassword:   "satellite.ContactPassword",
-	}
+// 	regional := models.Regional{
+// 		SatelitteID:       "25",
+// 		SatelitteName:     "satel",
+// 		SatelitteLocation: "satellite.SatelitteLocation",
+// 		ContactPerson:     "satellite.ContactPerson",
+// 		ContactEmail:      "satellite.ContactEmail",
+// 		ContactPassword:   "satellite.ContactPassword",
+// 	}
 
 
-	if err := initializers.DB.Create(&regional).Error; err != nil {
-		log.Printf("Error creating regional record: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
-		return
-	}
+// 	if err := initializers.DB.Create(&regional).Error; err != nil {
+// 		log.Printf("Error creating regional record: %v", err)
+// 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
+// 		return
+// 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
+// 	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
+// }
+
+func GetUserDonations(c *gin.Context) {
+    userID := c.Param("userID")
+    
+    // Get user details
+    var user models.User
+    if err := initializers.DB.Where("user_id = ?", userID).First(&user).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user"})
+        return
+    }
+    
+    // Get user's donations
+    var donations []models.Donor
+    if err := initializers.DB.Where("user_id = ?", userID).Find(&donations).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch donations"})
+        return
+    }
+    
+    // Return both user and donations data
+    c.JSON(http.StatusOK, gin.H{
+        "user": gin.H{
+            "firstName": user.FirstName,
+            "lastName": user.LastName,
+            "email": user.Email,
+        },
+        "donations": donations,
+    })
 }
