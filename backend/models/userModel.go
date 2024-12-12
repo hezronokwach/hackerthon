@@ -11,11 +11,19 @@ type User struct {
 	LastName    string
 }
 
-type Satelitte struct{
+type Satelitte struct {
 	gorm.Model
-	SatelitteName string
+	SatelitteName     string
 	SatelitteLocation string
-	ContactPerson string
-	ContactEmail string
-	ContactPassword string	
+	ContactPerson     string
+	ContactEmail      string
+	ContactPassword   string
+}
+type Donor struct {
+	ID          uint   `gorm:"primaryKey"`
+	FirstName   string `json:"firstName"`
+	LastName    string `json:"lastName"`
+	Email       string `json:"email" binding:"required"`
+	PhoneNumber string `json:"phoneNumber"`
+	SatelliteID uint   `json:"satelliteId" binding:"required"`
 }
