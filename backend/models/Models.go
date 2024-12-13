@@ -1,17 +1,21 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type User struct {
 	gorm.Model
-	UserID      string
-	Email       string `gorm:"uniqueIndex;not null"`
-	Password    string `gorm:"not null"`
-	PhoneNumber string
-	FirstName   string
-	LastName    string
+	UserID          string
+	Email           string `gorm:"uniqueIndex;not null"`
+	Password        string `gorm:"not null"`
+	PhoneNumber     string
+	FirstName       string
+	LastName        string
 	DashboardStatus string
-	Donations []Donation
+	Donations       []Donation
 }
 
 type Satellite struct {
@@ -20,11 +24,12 @@ type Satellite struct {
 	SatelliteName     string
 	SatelliteLocation string
 	ContactPerson     string
-	ContactEmail      string `gorm:"uniqueIndex;not null"`
-	ContactPassword   string `gorm:"not null"`
+	ContactEmail      string     `gorm:"uniqueIndex;not null"`
+	ContactPassword   string     `gorm:"not null"`
 	Donations         []Donation `gorm:"foreignKey:SatelliteID"`
 }
-//Represents a blood donation event
+
+// Represents a blood donation event
 type Donation struct {
 	gorm.Model
 	SerialID     string `gorm:"uniqueIndex"`
@@ -39,24 +44,24 @@ type Donation struct {
 	FacilityName string
 	UpdatedAt    string
 }
-//Represents regional centers for blood screening
+
+// Represents regional centers for blood screening
 type Regional struct {
 	gorm.Model
-	RegionalID       string `gorm:"uniqueIndex"`
-	RegionalLocation string
-	ContactPerson    string
-	ContactEmail     string `gorm:"uniqueIndex;not null"`
-	ContactPassword  string `gorm:"not null"`
+	RegionalID         string `gorm:"uniqueIndex"`
+	RegionalLocation   string
+	ContactPerson      string
+	ContactEmail       string     `gorm:"uniqueIndex;not null"`
+	ContactPassword    string     `gorm:"not null"`
 	ProcessedDonations []Donation `gorm:"foreignKey:RegionalID"`
 }
 
 // Hospital represents hospitals requesting blood.
-type Hospital struct {
-	gorm.Model
-	HospitalID       string `gorm:"uniqueIndex"`
-	HospitalName     string
-	HospitalLocation string
-	ContactPerson    string
-	ContactEmail     string `gorm:"uniqueIndex;not null"`
-	ContactPassword  string `gorm:"not null"`
+type HospitalRequest struct {
+	ID          uint      `gorm:"primaryKey"`
+	HospitalID  string    `gorm:"not null"`
+	BloodType   string    `gorm:"not null"`
+	RequestedBy string    `gorm:"not null"`
+	Status      string    `gorm:"default:'Pending'"`
+	CreatedAt   time.Time `gorm:"autoCreateTime"`
 }

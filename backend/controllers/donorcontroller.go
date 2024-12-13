@@ -2,6 +2,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//donorform
+// donorform
 func DonateBlood(c *gin.Context) {
 	var donorInput struct {
 		UserID       string `json:"userID"`
@@ -27,14 +28,13 @@ func DonateBlood(c *gin.Context) {
 	}
 
 	donor := models.Donation{
-		SerialID: time.Now().Format("20060102150405"),
+		SerialID:     time.Now().Format("20060102150405"),
 		UserID:       donorInput.UserID,
 		DonationDate: donorInput.DonationDate,
 		BloodType:    donorInput.BloodType,
 		Status:       "Donated",
 		SatelliteID:  donorInput.SatelliteID,
 		CurrentStage: "Satellite",
-		
 	}
 
 	if err := initializers.DB.Create(&donor).Error; err != nil {
@@ -45,35 +45,34 @@ func DonateBlood(c *gin.Context) {
 }
 
 // UpdateDonorStatus updates the donor dashboard with screening and current stage
-func UpdateDonorStatus(c *gin.Context){
-	var input struct{
+func UpdateDonorStatus(c *gin.Context) {
+	var input struct {
 		SerialID string `json:"serialID"`
 		Status   string `json:"status"` // Valid or Invalid
 	}
-	if err :=c.ShouldBind(&input); err !=nil{
-		c.JSON(http.StatusBadRequest, gin.H{"error":"Invalid input"})
+	if err := c.ShouldBind(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 		return
 	}
 
 	var donation models.Donation
-	if err:=initializers.DB.Where("serial_id=?",input.SerialID).First(&donation).Error; err !=nil{
-		c.JSON(http.StatusNotFound, gin.H{"error":"Donation not found"})
+	if err := initializers.DB.Where("serial_id=?", input.SerialID).First(&donation).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Donation not found"})
 		return
 	}
 
-	donation.Status=input.Status
-	if input.Status=="Valid"{
-		donation.CurrentStage="Regional"
-	}else{
-		donation.CurrentStage="Invalid"
+	donation.Status = input.Status
+	if input.Status == "Valid" {
+		donation.CurrentStage = "Regional"
+	} else {
+		donation.CurrentStage = "Invalid"
 	}
 
-	if err:=initializers.DB.Save(&donation).Error;err !=nil{
-		c.JSON(http.StatusInternalServerError, gin.H{"error":"Failed to update donation"})
+	if err := initializers.DB.Save(&donation).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update donation"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message":"Donor dashboard updated successfully"})
-
+	c.JSON(http.StatusOK, gin.H{"message": "Donor dashboard updated successfully"})
 }
 
 // NotifyDonor sends a thank-you message to the donor after their blood is used.
