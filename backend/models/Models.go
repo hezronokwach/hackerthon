@@ -43,6 +43,7 @@ type Donation struct {
 	BloodType    string
 	FacilityName string
 	UpdatedAt    string
+	RecipientID string
 }
 
 // Represents regional centers for blood screening
