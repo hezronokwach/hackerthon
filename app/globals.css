@@ -8,9 +8,20 @@
     --background-color: #F5F5F5;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
-    background-color: var(--background-color);
-    font-family: 'Arial', sans-serif;
+  background-color: var(--background-color);
+  font-family: 'Arial', sans-serif;
+
+  /* Add background image using Tailwind's utility classes */
+  background-image: url('/images/img6.jpeg/'); /* Path to the background image */
+  background-size: cover; /* Ensures the image covers the entire viewport */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents repeating the background image */
+  background-attachment: fixed; /* Keeps the background fixed when scrolling */
 }
 
 .card-grid {
