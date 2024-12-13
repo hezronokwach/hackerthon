@@ -51,10 +51,10 @@ export default function DonorTrackingPage() {
                     {donations.map((donation, index) => (
                         <div key={index} className="donation-card">
                             <h4>Donation Details</h4>
-                            <p>Date: {donation.DonationDate}</p>
-                            <p>Blood Type: {donation.BloodType}</p>
-                            <p>Status: {donation.Status}</p>
-                            <p>Facility Name: {donation.FacilityName}</p>
+                            {donation.DonationDate && <p>Date: {donation.DonationDate}</p>}
+                            {donation.BloodType && <p>Blood Type: {donation.BloodType}</p>}
+                            {donation.Status && <p>Status: {donation.Status}</p>}
+                            {donation.FacilityName && <p>Facility Name: {donation.FacilityName}</p>}
                         </div>
                     ))}
                 </div>

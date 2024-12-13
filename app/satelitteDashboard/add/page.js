@@ -5,8 +5,6 @@ import { useState } from 'react';
 
 export default function DonorForm() {
     const [userID, setuserID] = useState('');
-    const [donationDate, setdonationDate] = useState('');
-    const [bloodType, setbloodType] = useState('');
     const [status, setstatus] = useState('');
     const [satelliteId, setSatelliteId] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
@@ -20,9 +18,7 @@ export default function DonorForm() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                userID,
-                donationDate,
-                bloodType,
+                userID,               
                 status,
                 satelliteId,
                 sourceType: 'satellite' // Specify the source type
@@ -48,15 +44,7 @@ export default function DonorForm() {
                 <div>
                     <label>User ID:</label>
                     <input type="text" value={userID} onChange={(e) => setuserID(e.target.value)} required />
-                </div>
-                <div>
-                    <label>Donation Date:</label>
-                    <input type="text" value={donationDate} onChange={(e) => setdonationDate(e.target.value)} required />
-                </div>
-                <div>
-                    <label>BloodType:</label>
-                    <input type="text" value={bloodType} onChange={(e) => setbloodType(e.target.value)} required />
-                </div>
+                </div>                        
                 <div>
                     <label>Status:</label>
                     <input type="text" value={status} onChange={(e) => setstatus(e.target.value)} />

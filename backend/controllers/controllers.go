@@ -13,20 +13,21 @@ import (
 
 func SignUp(c *gin.Context) {
 	var SignupInput struct {
-		UserID      string `json:"userID"`
+		//UserID      string `json:"userID"`
 		Email       string `json:"email" binding:"required"`
 		Password    string `json:"password" binding:"required"`
 		PhoneNumber string `json:"phoneNumber"`
 		FirstName   string `json:"firstName"`
 		LastName    string `json:"lastName"`
 	}
+
 	if err := c.ShouldBindJSON(&SignupInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid input"})
 		return
 	}
 
 	user := models.User{
-		UserID:      SignupInput.UserID,
+		//UserID:      SignupInput.UserID,
 		Email:       SignupInput.Email,
 		Password:    SignupInput.Password,
 		PhoneNumber: SignupInput.PhoneNumber,
@@ -69,7 +70,7 @@ func Login(c *gin.Context) {
 
 func Satelitte(c *gin.Context) {
 	var satellite struct {
-		ID                string `json:"satelliteID"`
+		//ID                string `json:"satelliteID"`
 		SatelitteName     string `json:"satelliteName"`
 		SatelitteLocation string `json:"satelliteLocation"`
 		ContactPerson     string `json:"contactPerson"`
@@ -82,14 +83,14 @@ func Satelitte(c *gin.Context) {
 	}
 
 	satellite1 := models.Satelitte{
-		SatelitteID:       satellite.ID,
+		//SatelitteID:       satellite.ID,
 		SatelitteName:     satellite.SatelitteName,
 		SatelitteLocation: satellite.SatelitteLocation,
 		ContactPerson:     satellite.ContactPerson,
 		ContactEmail:      satellite.ContactEmail,
 		ContactPassword:   satellite.ContactPassword,
 	}
-	fmt.Println("satelitte id", satellite.ID)
+	//fmt.Println("satelitte id", satellite.ID)
 	if err := initializers.DB.Create(&satellite1).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
 		return
@@ -104,7 +105,7 @@ func SatelitteLogin(c *gin.Context) {
 		Email    string `json:"email" binding:"required"`
 		Password string `json:"password" binding:"required"`
 	}
-	fmt.Println("id", SatelitteInput.ID)
+	//fmt.Println("id", SatelitteInput.ID)
 	if err := c.ShouldBindJSON(&SatelitteInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid input"})
 		return
@@ -131,11 +132,11 @@ func Region(c *gin.Context) {
 	}
 
 	regional := models.Regional{
-		RegionID:       "24",
+		//RegionID:       "24",
 		RegionName:     "Mombasa Safe",
 		RegionLocation: "Mombasa",
-		ContactPerson:     "Kevin",
-		ContactEmail:      "kevin@gmail.com",
+		ContactPerson:     "Brian",
+		ContactEmail:      "brian@gmail.com",
 		ContactPassword:   "12",
 	}
 
@@ -158,7 +159,7 @@ func GetUserDonations(c *gin.Context) {
 		return
 	}
 
-	var donations []models.Donor
+	var donations []models.DonorBlood
 
 	// Check for hospital donations first
 	if err := initializers.DB.Where("user_id = ? AND source_type = ?", userID, "hospital").Find(&donations).Error; err != nil {
@@ -187,7 +188,7 @@ func GetUserDonations(c *gin.Context) {
 		var facilityName string
 		if donation.SourceType == "regional" {
 			var regionals []models.Regional
-			if err := initializers.DB.Where("satelitte_id = ?", donation.RegionalID).Find(&regionals).Error; err != nil {
+			if err := initializers.DB.Where("region_id = ?", donation.RegionalID).Find(&regionals).Error; err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch regional information"})
 				return
 			}

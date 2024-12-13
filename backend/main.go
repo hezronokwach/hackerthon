@@ -29,16 +29,12 @@ func main() {
 	// Define the /signin route
 	router.POST("/signup", controllers.SignUp)	
 	router.POST("/login", controllers.Login)
-	router.POST("/satellite", controllers.Satelitte)
+	router.POST("/satelliteSignup", controllers.Satelitte)
 	router.POST("/satelitteLogin", controllers.SatelitteLogin)
-	router.POST("/satelitteDashboard/add", controllers.DonateBlood)
+	router.POST("/satelitteDashboard/add", controllers.SatelitteBlood)
 	router.GET("/region", controllers.Region)
 	router.GET("/donorPage/:userID", controllers.GetUserDonations)
 	router.POST("/regional/add", controllers.RegionBlood)
-
-
-
-
 	// Run the server on port 3000
 	router.Run(":3000")
 }
