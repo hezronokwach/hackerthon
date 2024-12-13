@@ -43,3 +43,35 @@ func DonateBlood(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Donation request submitted successfully"})
 }
+
+// UpdateDonorStatus updates the donor dashboard with screening and current stage
+func UpdateDonorStatus(c *gin.Context){
+	var input struct{
+		SerialID string `json:"serialID"`
+		Status   string `json:"status"` // Valid or Invalid
+	}
+	if err :=c.ShouldBind(&input); err !=nil{
+		c.JSON(http.StatusBadRequest, gin.H{"error":"Invalid input"})
+		return
+	}
+
+	var donation models.Donation
+	if err:=initializers.DB.Where("serial_id=?",input.SerialID).First(&donation).Error; err !=nil{
+		c.JSON(http.StatusNotFound, gin.H{"error":"Donation not found"})
+		return
+	}
+
+	donation.Status=input.Status
+	if input.Status=="Valid"{
+		donation.CurrentStage="Regional"
+	}else{
+		donation.CurrentStage="Invalid"
+	}
+
+	if err:=initializers.DB.Save(&donation).Error;err !=nil{
+		c.JSON(http.StatusInternalServerError, gin.H{"error":"Failed to update donation"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message":"Donor dashboard updated successfully"})
+
+}
