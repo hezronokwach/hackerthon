@@ -124,15 +124,7 @@ func SatelitteLogin(c *gin.Context) {
 }
 
 func Region(c *gin.Context) {
-	// Ensure the DB is migrated (ideally done at app startup)
-	if err := initializers.DB.AutoMigrate(&models.Regional{}); err != nil {
-		log.Printf("Migration failed: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Database migration failed"})
-		return
-	}
-
 	regional := models.Regional{
-		//RegionID:       "24",
 		RegionName:     "Mombasa Safe",
 		RegionLocation: "Mombasa",
 		ContactPerson:     "Brian",
@@ -145,8 +137,25 @@ func Region(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
 		return
 	}
+	c.JSON(http.StatusOK, gin.H{"message": "Region center created successfully"})
+}
 
-	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
+func Hospital(c *gin.Context) {
+
+	hospital := models.Hospital{
+		HospitalName:     "Mombasa Provisional",
+		HospitalLocation: "Mombasa",
+		ContactPerson:     "Dan",
+		ContactEmail:      "Dan@gmail.com",
+		ContactPassword:   "12",
+	}
+	if err := initializers.DB.Create(&hospital).Error; err != nil {
+		log.Printf("Error creating regional record: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Hospital created successfully"})
 }
 
 func GetUserDonations(c *gin.Context) {
@@ -184,6 +193,7 @@ func GetUserDonations(c *gin.Context) {
 	}
 
 	var enrichedDonations []gin.H
+
 	for _, donation := range donations {
 		var facilityName string
 		if donation.SourceType == "regional" {
@@ -195,6 +205,11 @@ func GetUserDonations(c *gin.Context) {
 			if len(regionals) > 0 {
 				facilityName = regionals[0].RegionName
 			}
+
+			// Check if the status is "discarded"
+			if donation.Status == "discarded" {
+				donation.Feedback = "Please visit the next health center for consultation."
+			}
 		} else if donation.SourceType == "satellite" {
 			var satellites []models.Satelitte
 			if err := initializers.DB.Where("satelitte_id = ?", donation.SatelliteID).Find(&satellites).Error; err != nil {
@@ -205,7 +220,7 @@ func GetUserDonations(c *gin.Context) {
 				facilityName = satellites[0].SatelitteName
 			}
 		} else if donation.SourceType == "hospital" {
-			//am coming to implement this
+			// Implement hospital logic here
 		}
 
 		enrichedDonations = append(enrichedDonations, gin.H{
@@ -213,15 +228,18 @@ func GetUserDonations(c *gin.Context) {
 			"BloodType":    donation.BloodType,
 			"Status":       donation.Status,
 			"FacilityName": facilityName,
+			"Feedback":     donation.Feedback, // Include feedback in the response
 		})
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	response := gin.H{
 		"user": gin.H{
 			"firstName": user.FirstName,
 			"lastName":  user.LastName,
 			"email":     user.Email,
 		},
 		"donations": enrichedDonations,
-	})
+	}
+
+	c.JSON(http.StatusOK, response)
 }

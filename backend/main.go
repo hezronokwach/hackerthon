@@ -20,7 +20,7 @@ func init() {
 func main() {
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3001"}, // Adjust this to your frontend's origin
+		AllowOrigins:     []string{"http://localhost:3001"}, 
 		AllowMethods:     []string{"POST", "GET", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		AllowCredentials: true,
@@ -35,6 +35,9 @@ func main() {
 	router.GET("/region", controllers.Region)
 	router.GET("/donorPage/:userID", controllers.GetUserDonations)
 	router.POST("/regional/add", controllers.RegionBlood)
+	router.POST("/regional/update", controllers.RegionUpdate)
+	router.GET("/hospital", controllers.Hospital)
+
 	// Run the server on port 3000
 	router.Run(":3000")
 }

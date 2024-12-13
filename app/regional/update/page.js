@@ -1,16 +1,16 @@
-
 "use client";
 import { useState } from 'react';
 
-export default function RegionalAddBlood() {
+export default function RegionalUpdateBlood() {
     const [bloodID, setserialID] = useState('');
     const [regionalID, setregionalID] = useState('');
-    const [status, setStatus] = useState('');
+    const [bloodType, setbloodType] = useState('');
+    const [status, setStatus] = useState('healthy'); // Default to 'healthy'
     const [message, setMessage] = useState(null);
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3000/regional/add', {
+            const response = await fetch('http://localhost:3000/regional/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -18,16 +18,14 @@ export default function RegionalAddBlood() {
                 body: JSON.stringify({
                     bloodID,
                     regionalID,
-                   // date,
+                    bloodType,
                     status,
-                    sourceType: 'regional' // Specify the source type
+                    sourceType: 'regional'
                 }),
             });
             const data = await response.json();
             if (response.ok) {
                 setMessage({ type: "success", text: data.message });
-                // window.location.href = '/';
-
             } else {
                 setMessage({ type: "error", text: data.message });
             }
@@ -47,12 +45,17 @@ export default function RegionalAddBlood() {
                     <label>RegionalID</label>
                     <input type="text" value={regionalID} onChange={e => setregionalID(e.target.value)} required />
                 </div>
-                
+                <div>
+                    <label>Blood Type</label>
+                    <input type="text" value={bloodType} onChange={e => setbloodType(e.target.value)} required />
+                </div>
                 <div>
                     <label>Status</label>
-                    <input type="text" value={status} onChange={e => setStatus(e.target.value)} required />
+                    <select value={status} onChange={e => setStatus(e.target.value)} required>
+                        <option value="healthy">Healthy</option>
+                        <option value="discarded">Discarded</option>
+                    </select>
                 </div>
-
                 <button type="submit">Submit</button>
             </form>
             {message && (

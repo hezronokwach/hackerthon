@@ -55,6 +55,8 @@ export default function DonorTrackingPage() {
                             {donation.BloodType && <p>Blood Type: {donation.BloodType}</p>}
                             {donation.Status && <p>Status: {donation.Status}</p>}
                             {donation.FacilityName && <p>Facility Name: {donation.FacilityName}</p>}
+                            {donation.Feedback && <p>Feedback: {donation.Feedback}</p>}
+
                         </div>
                     ))}
                 </div>
