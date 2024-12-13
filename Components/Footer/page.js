@@ -2,7 +2,7 @@ import styles from "./footer.module.css";
 
 export default function Footer() {
   return (
-    <div className={styles.footerdiv}>
+    <footer className={`${styles.footerdiv} mt-auto`}>
       <p className={styles.copyright}>© 2024 LifeShare. Saving Lives Together.</p>
       <ul className={styles.socialLinks}>
         <li className={styles.socialLinkItem}>Twitter</li>
@@ -10,6 +10,6 @@ export default function Footer() {
         <li className={styles.socialLinkItem}>LinkedIn</li>
         <li className={styles.socialLinkItem}>Instagram</li>
       </ul>
-    </div>
+    </footer>
   );
 }
