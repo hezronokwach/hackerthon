@@ -10,32 +10,51 @@ type User struct {
 	PhoneNumber string
 	FirstName   string
 	LastName    string
+	Donations []Donation
 }
 
-type Satelitte struct {
+type Satellite struct {
 	gorm.Model
-	SatelitteID       string
-	SatelitteName     string
-	SatelitteLocation string
+	SatelliteID       string `gorm:"uniqueIndex"`
+	SatelliteName     string
+	SatelliteLocation string
 	ContactPerson     string
-	ContactEmail      string
-	ContactPassword   string
-}
-
-type Donor struct {
-	UserID       string
-	DonationDate string
-	BloodType    string
-	Status       string
-	SatelliteID  string
-}
-
-type Regional struct {
-	ID uint
-	SatelitteID       string `gorm:"not null"`
-	SatelitteName     string `gorm:"not null"`
-	SatelitteLocation string `gorm:"not null"`
-	ContactPerson     string `gorm:"not null"`
-	ContactEmail      string `gorm:"not null"`
+	ContactEmail      string `gorm:"uniqueIndex;not null"`
 	ContactPassword   string `gorm:"not null"`
+	Donations         []Donation `gorm:"foreignKey:SatelliteID"`
+}
+//Represents a blood donation event
+type Donation struct {
+	gorm.Model
+	SerialID     string `gorm:"uniqueIndex"`
+	UserID       string
+	User         User
+	SatelliteID  string
+	Satellite    Satellite
+	Status       string
+	CurrentStage string // Satellite, Regional, or Hospital
+	BloodType    string
+	FacilityName string
+	UpdatedAt    string
+}
+//Represents regional centers for blood screening
+type Regional struct {
+	gorm.Model
+	RegionalID       string `gorm:"uniqueIndex"`
+	RegionalLocation string
+	ContactPerson    string
+	ContactEmail     string `gorm:"uniqueIndex;not null"`
+	ContactPassword  string `gorm:"not null"`
+	ProcessedDonations []Donation `gorm:"foreignKey:RegionalID"`
+}
+
+// Hospital represents hospitals requesting blood.
+type Hospital struct {
+	gorm.Model
+	HospitalID       string `gorm:"uniqueIndex"`
+	HospitalName     string
+	HospitalLocation string
+	ContactPerson    string
+	ContactEmail     string `gorm:"uniqueIndex;not null"`
+	ContactPassword  string `gorm:"not null"`
 }
