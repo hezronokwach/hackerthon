@@ -29,6 +29,7 @@ type Donation struct {
 	SerialID     string `gorm:"uniqueIndex"`
 	UserID       string
 	User         User
+	DonationDate string
 	SatelliteID  string
 	Satellite    Satellite
 	Status       string

@@ -3,12 +3,14 @@ package controllers
 
 import (
 	"net/http"
+	"time"
 
 	"authorization/backend/initializers"
 	"authorization/backend/models"
 
 	"github.com/gin-gonic/gin"
 )
+
 //donorform
 func DonateBlood(c *gin.Context) {
 	var donorInput struct {
@@ -24,12 +26,15 @@ func DonateBlood(c *gin.Context) {
 		return
 	}
 
-	donor := models.Donor{
+	donor := models.Donation{
+		SerialID: time.Now().Format("20060102150405"),
 		UserID:       donorInput.UserID,
 		DonationDate: donorInput.DonationDate,
 		BloodType:    donorInput.BloodType,
-		Status:       donorInput.Status,
+		Status:       "Donated",
 		SatelliteID:  donorInput.SatelliteID,
+		CurrentStage: "Satellite",
+		
 	}
 
 	if err := initializers.DB.Create(&donor).Error; err != nil {
