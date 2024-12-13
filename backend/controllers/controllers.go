@@ -8,6 +8,7 @@ import (
 	"authorization/backend/models"
 
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func SignUp(c *gin.Context) {
@@ -120,32 +121,32 @@ func SatelitteLogin(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Login successfully"})
 }
 
-// func Region(c *gin.Context) {
-// 	// Ensure the DB is migrated (ideally done at app startup)
-// 	if err := initializers.DB.AutoMigrate(&models.Regional{}); err != nil {
-// 		log.Printf("Migration failed: %v", err)
-// 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Database migration failed"})
-// 		return
-// 	}
+func Region(c *gin.Context) {
+	// Ensure the DB is migrated (ideally done at app startup)
+	if err := initializers.DB.AutoMigrate(&models.Regional{}); err != nil {
+		log.Printf("Migration failed: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Database migration failed"})
+		return
+	}
 
-// 	regional := models.Regional{
-// 		SatelitteID:       "25",
-// 		SatelitteName:     "satel",
-// 		SatelitteLocation: "satellite.SatelitteLocation",
-// 		ContactPerson:     "satellite.ContactPerson",
-// 		ContactEmail:      "satellite.ContactEmail",
-// 		ContactPassword:   "satellite.ContactPassword",
-// 	}
+	regional := models.Regional{
+		SatelitteID:       "24",
+		SatelitteName:     "sate2",
+		SatelitteLocation: "satellite.SatelitteLocation",
+		ContactPerson:     "satellite.ContactPerson",
+		ContactEmail:      "satellite.ContactEmail",
+		ContactPassword:   "satellite.ContactPassword",
+	}
 
 
-// 	if err := initializers.DB.Create(&regional).Error; err != nil {
-// 		log.Printf("Error creating regional record: %v", err)
-// 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
-// 		return
-// 	}
+	if err := initializers.DB.Create(&regional).Error; err != nil {
+		log.Printf("Error creating regional record: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
+		return
+	}
 
-// 	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
-// }
+	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
+}
 
 func GetUserDonations(c *gin.Context) {
     userID := c.Param("userID")
