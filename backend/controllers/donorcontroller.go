@@ -75,3 +75,31 @@ func UpdateDonorStatus(c *gin.Context){
 	c.JSON(http.StatusOK, gin.H{"message":"Donor dashboard updated successfully"})
 
 }
+
+// NotifyDonor sends a thank-you message to the donor after their blood is used.
+func NotifyDonor(c *gin.Context) {
+	var input struct {
+		SerialID string `json:"serialID"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+
+	var donation models.Donation
+	if err := initializers.DB.Preload("User").Where("serial_id = ?", input.SerialID).First(&donation).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Donation not found"})
+		return
+	}
+
+	// Verify the donation is at the "Used" stage
+	if donation.CurrentStage != "Used" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Donation has not been used yet"})
+		return
+	}
+
+	// Send a thank-you message
+	thankYouMessage := fmt.Sprintf("Thank you, %s %s, for saving a life!", donation.User.FirstName, donation.User.LastName)
+	c.JSON(http.StatusOK, gin.H{"message": thankYouMessage})
+}
