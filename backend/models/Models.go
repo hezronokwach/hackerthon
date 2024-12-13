@@ -10,6 +10,7 @@ type User struct {
 	PhoneNumber string
 	FirstName   string
 	LastName    string
+	DashboardStatus string
 	Donations []Donation
 }
 

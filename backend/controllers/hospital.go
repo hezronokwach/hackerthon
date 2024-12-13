@@ -1,3 +1,14 @@
+package controllers
+
+import (
+	"net/http"
+
+	"authorization/backend/initializers"
+	"authorization/backend/models"
+
+	"github.com/gin-gonic/gin"
+)
+
 // GetHospitalRequests retrieves blood requests made by a hospital.
 func GetHospitalRequests(c *gin.Context) {
 	hospitalID := c.Param("hospitalID")
