@@ -34,6 +34,7 @@ func main() {
 	router.POST("/satelitteDashboard/add", controllers.DonateBlood)
 	router.GET("/region", controllers.Region)
 	router.GET("/donorPage/:userID", controllers.GetUserDonations)
+	router.POST("/regional/add", controllers.RegionBlood)
 
 
 

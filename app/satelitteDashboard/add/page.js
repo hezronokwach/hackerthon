@@ -12,35 +12,35 @@ export default function DonorForm() {
     const [responseMessage, setResponseMessage] = useState('');
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('http://localhost:3000/satelitteDashboard/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userID,
-                    donationDate,
-                    bloodType,
-                    status,
-                    satelliteId
-                }),
-            });
+    e.preventDefault();
+    try {
+        const response = await fetch('http://localhost:3000/satelitteDashboard/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userID,
+                donationDate,
+                bloodType,
+                status,
+                satelliteId,
+                sourceType: 'satellite' // Specify the source type
+            }),
+        });
 
-            const data = await response.json();
-            if (response.ok) {
-                setResponseMessage({ type: "success", text: "Donation recorded successfully!" });
-                setTimeout(() => {
-                    window.location.href = `/donorPage/${userID}`;
-                }, 1000);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            setResponseMessage('An error occurred. Please try again.');
+        const data = await response.json();
+        if (response.ok) {
+            setResponseMessage({ type: "success", text: "Donation recorded successfully!" });
+            setTimeout(() => {
+                window.location.href = `/donorPage/${userID}`;
+            }, 1000);
         }
-    };
-
+    } catch (error) {
+        console.error('Error:', error);
+        setResponseMessage('An error occurred. Please try again.');
+    }
+};
     return (
         <>
             <h1>Donate Blood</h1>

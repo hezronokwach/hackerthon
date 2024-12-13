@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 
 export default function DonorTrackingPage() {
     const [userData, setUserData] = useState(null);
-    const [donations, setDonations] = useState([]);
+    const [donations, setDonations] = useState([]); // Initialize as an empty array
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const params = useParams();
@@ -20,7 +20,7 @@ export default function DonorTrackingPage() {
 
                 const data = await response.json();
                 setUserData(data.user);
-                setDonations(data.donations);
+                setDonations(data.donations || []); // Ensure donations is always an array
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -54,7 +54,7 @@ export default function DonorTrackingPage() {
                             <p>Date: {donation.DonationDate}</p>
                             <p>Blood Type: {donation.BloodType}</p>
                             <p>Status: {donation.Status}</p>
-                            <p>Satellite ID: {donation.SatelliteID}</p>
+                            <p>Facility Name: {donation.FacilityName}</p>
                         </div>
                     ))}
                 </div>

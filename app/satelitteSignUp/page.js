@@ -26,7 +26,7 @@ export default function SatelitteSignUp() {
             if (response.ok) {
                 setMessage({ type: "success", text: data.message });
                 setTimeout(() => {
-                    window.location.href = '/login'; // Redirect using window.location
+                    window.location.href = '/satelitteLogin'; // Redirect using window.location
                 }, 1000);
             } else {
                 setMessage({ type: "error", text: data.message });
