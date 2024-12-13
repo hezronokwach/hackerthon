@@ -26,18 +26,30 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	// Define the /signin route
-	router.POST("/signup", controllers.SignUp)	
-	router.POST("/login", controllers.Login)
-	router.POST("/satellite", controllers.Satelitte)
-	router.POST("/satelitteLogin", controllers.SatelitteLogin)
-	router.POST("/satelitteDashboard/add", controllers.DonateBlood)
-	//router.GET("/region", controllers.Region)
-	router.GET("/donorPage/:userID", controllers.GetUserDonations)
+	// Routes for user actions
+	router.POST("/signup", controllers.SignUp)     // User signup
+	router.POST("/login", controllers.Login)       // User login
 
+	// Routes for donor actions
+	router.POST("/donate", controllers.DonateBlood)        // Donor donates blood
+	router.PUT("/donor-status", controllers.UpdateDonorStatus) // Update donor status
+	router.POST("/donor-notify", controllers.NotifyDonor)      // Notify donor after donation
 
+	// Routes for hospital requests
+	router.POST("/hospital-request", controllers.HospitalRequest)  // Hospital blood request
+	router.PUT("/record-recipient", controllers.RecordRecipient)  // Record recipient for blood donation
+	router.PUT("/approve-request", controllers.ApproveRequest)    // Approve blood request
 
+	// Routes for regional center actions
+	router.GET("/regional-donations/:regionalID", controllers.GetRegionalDonations) // Get donations for a regional center
+	router.POST("/blood-screening", controllers.ProcessBloodScreeningForm) // Process blood screening form
 
-	// Run the server on port 3000
+	// Routes for satellite actions
+	router.POST("/satellite", controllers.Satelitte) // Satellite-related actions (example)
+
+	// Start the server
 	router.Run(":3000")
+
 }
+
+

@@ -120,37 +120,9 @@ func SatelitteLogin(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Login successfully"})
 }
 
-// func Region(c *gin.Context) {
-// 	// Ensure the DB is migrated (ideally done at app startup)
-// 	if err := initializers.DB.AutoMigrate(&models.Regional{}); err != nil {
-// 		log.Printf("Migration failed: %v", err)
-// 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Database migration failed"})
-// 		return
-// 	}
-
-// 	regional := models.Regional{
-// 		SatelitteID:       "25",
-// 		SatelitteName:     "satel",
-// 		SatelitteLocation: "satellite.SatelitteLocation",
-// 		ContactPerson:     "satellite.ContactPerson",
-// 		ContactEmail:      "satellite.ContactEmail",
-// 		ContactPassword:   "satellite.ContactPassword",
-// 	}
-
-
-// 	if err := initializers.DB.Create(&regional).Error; err != nil {
-// 		log.Printf("Error creating regional record: %v", err)
-// 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
-// }
 
 func GetUserDonations(c *gin.Context) {
     userID := c.Param("userID")
-    
-    // Get user details
     var user models.User
     if err := initializers.DB.Where("user_id = ?", userID).First(&user).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user"})
