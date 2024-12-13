@@ -79,7 +79,38 @@ func ProcessBloodScreeningForm(c *gin.Context) {
 
 	// Respond with a success message
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Donation processed and user dashboard updated successfully",
+		"message":  "Donation processed and user dashboard updated successfully",
 		"donation": donation,
 	})
+}
+
+// ApproveRequest allows the regional admin to approve a blood request
+func ApproveRequest(c *gin.Context) {
+	var input struct {
+		RequestID  uint   `json:"requestID"`
+		ApproverID string `json:"approverID"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+
+	var request models.HospitalRequest
+	if err := initializers.DB.First(&request, input.RequestID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Request not found"})
+		return
+	}
+
+	// Update the request status and approver ID
+	request.Status = "Approved"
+	request.ApproverID = input.ApproverID
+	request.ApprovedAt = time.Now()
+
+	if err := initializers.DB.Save(&request).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update request"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Request approved successfully", "requestID": request.ID})
 }

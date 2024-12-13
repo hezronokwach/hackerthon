@@ -58,10 +58,13 @@ type Regional struct {
 
 // Hospital represents hospitals requesting blood.
 type HospitalRequest struct {
-	ID          uint      `gorm:"primaryKey"`
-	HospitalID  string    `gorm:"not null"`
-	BloodType   string    `gorm:"not null"`
-	RequestedBy string    `gorm:"not null"`
-	Status      string    `gorm:"default:'Pending'"`
-	CreatedAt   time.Time `gorm:"autoCreateTime"`
+	ID          uint      `gorm:"primaryKey" json:"id"`
+	HospitalID  string    `json:"hospitalID"`
+	BloodType   string    `json:"bloodType"`
+	// UnitsNeeded int       `json:"unitsNeeded"`
+	RequestedBy string    `json:"requestedBy"`
+	Status      string    `json:"status"`
+	ApproverID  string    `json:"approverID,omitempty"`
+	CreatedAt   time.Time `json:"createdAt"`
+	ApprovedAt  time.Time `json:"approvedAt,omitempty"`
 }

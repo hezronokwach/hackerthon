@@ -40,7 +40,7 @@ func HospitalRequest(c *gin.Context) {
 	}
 
 	// Notify regional admin (placeholder for actual notification logic)
-	go notifyRegionalAdmins(request)
+
 
 	c.JSON(http.StatusOK, gin.H{"message": "Blood request submitted successfully", "requestID": request.ID})
 }
