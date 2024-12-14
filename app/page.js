@@ -1,124 +1,91 @@
-'use client'; // Ensure this is a client component
+import React from 'react'
+import Link from "next/link"
+import Image from 'next/image';
 
-import React, { useState } from 'react';
-import styled from 'styled-components';
-// import Link from 'next/link';
+import './globals.css'
 
-// Styled components for layout
-const HomeContainer = styled.div`
-    position: relative;
-    min-height: 100vh; /* Ensure it covers full height */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-    background-image: url('/red-blood-cells.jpeg'); /* Use the correct path */
-    background-size: cover; /* Cover the entire container */
-    background-position: center; /* Center the image */
-`;
+export default function LandingPage() {
+  return (
+    <div className="mt-16"> {/* Added margin-top to push content down */}
+      {/* Special Links Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900">Save Lives, One Drop at a Time</h2>
+          <p className="mt-4 text-xl text-gray-600">Track your blood donation journey and see your impact</p>
+        </div>
 
-const Header = styled.header`
-    position: absolute;
-    top: 20px;
-    left: 20px; /* Adjusted for better placement */
-    display: flex;
-    gap: 20px;
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Link href="/signup" className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 text-center">
+            <div className="mx-auto mb-2 text-red-600 text-4xl">🩸</div>
+            <span className="font-semibold text-gray-800">Donor Sign Up</span>
+          </Link>
+          
+          <Link href="/login" className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 text-center">
+            <div className="mx-auto mb-2 text-red-600 text-4xl">🩺</div>
+            <span className="font-semibold text-gray-800">Donor Login</span>
+          </Link>
+          
+          {/* <Link href="/satelitteLogin" className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 text-center">
+            <div className="mx-auto mb-2 text-red-600 text-4xl">🏥</div>
+            <span className="font-semibold text-gray-800">Satellite Login</span>
+          </Link>
+          
+          <Link href="/satelitteSignUp" className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 text-center">
+            <div className="mx-auto mb-2 text-red-600 text-4xl">➕</div>
+            <span className="font-semibold text-gray-800">Satellite Sign Up</span>
+          </Link>
 
-    a {
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-        transition: color 0.3s;
+          <Link href="/satelitteSignUp" className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 text-center">
+            <div className="mx-auto mb-2 text-red-600 text-4xl">➕</div>
+            <span className="font-semibold text-gray-800">Satellite Sign Up</span>
+          </Link> */}
 
-        &:hover {
-            color: #ffcc00; /* Highlight color on hover */
-        }
-    }
-`;
+          
+        </div>
+      </div>
 
-const Logo = styled.img`
-    width: 150px; /* Adjust size as needed */
-`;
+      {/* Card Grid */}
+      <div className="card-grid">
+        {/* Donation Center Card */}
+        <div className="card">
+          <img src="/images/img1.jpeg/" alt="Donation Center" className="card-image" />
+          <div className="p-4">
+            <h3 className="text-xl font-semibold mb-2">Find Donation Centers</h3>
+            <p className="text-gray-600 mb-4">Locate nearby blood donation centers easily</p>
+            <button className="btn-primary w-full py-2 rounded-md">Find Centers</button>
+          </div>
+        </div>
 
-const GetStartedButton = styled.button`
-    padding: 15px 30px;
-    font-size: 18px;
-    color: #fff;
-    background-color: #0070f3; /* Button color */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+        {/* Donation Tracking Card */}
+        <div className="card">
+          <img src="/images/img2.jpeg/" alt="Donation Tracking" className="card-image" />
+          <div className="p-4">
+            <h3 className="text-xl font-semibold mb-2">Track Your Donation</h3>
+            <p className="text-gray-600 mb-4">Follow your blood's journey from recipient</p>
+            <button className="btn-primary w-full py-2 rounded-md">View Tracking</button>
+          </div>
+        </div>
 
-    &:hover {
-        background-color: #005bb5; /* Darker shade on hover */
-    }
-`;
+        {/* Emergency Needs Card */}
+        <div className="card">
+          <img src="/images/img3.jpeg/" alt="Emergency Needs" className="card-image" />
+          <div className="p-4">
+            <h3 className="text-xl font-semibold mb-2">Emergency Blood Needs</h3>
+            <p className="text-gray-600 mb-4">Urgent calls for blood donation in your area</p>
+            <button className="btn-primary w-full py-2 rounded-md">View Alerts</button>
+          </div>
+        </div>
 
-const FooterContainer = styled.footer`
-    width: 100%;
-    padding: 20px 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent footer */
-    text-align: center;
-`;
-
-const SocialLinks = styled.ul`
-    list-style-type: none;
-    padding: 0;
-
-    .socialLinkItem {
-        display: inline-block;
-        margin-right: 15px; /* Space between social links */
-        color: white;
-
-        &:hover {
-            color: #ffcc00; /* Highlight color on hover */
-        }
-    }
-`;
-
-// HomePage Component
-function HomePage({ onGetStarted }) {
-    return (
-        <HomeContainer>
-            <Header>
-                {/* <Link href="/about">About Us</Link>
-                <Link href="/contact">Contact</Link>
-                <Link href="/faq">FAQs</Link> */}
-            </Header>
-            <h1>Welcome to SavePulse</h1>
-            <p>Your journey to saving lives starts here.</p>
-            <GetStartedButton onClick={onGetStarted}>Get Started</GetStartedButton>
-        </HomeContainer>
-    );
-}
-
-// IndexPage Component
-export default function IndexPage() {
-   const [showLanding, setShowLanding] = useState(false);
-
-   const handleGetStarted = () => {
-       setShowLanding(true);
-   };
-
-   return (
-       <>
-           {showLanding ? (
-               <LandingPage /> // Assuming LandingPage is defined elsewhere
-           ) : (
-               <HomePage onGetStarted={handleGetStarted} />
-           )}
-           {/* Footer Component */}
-           <FooterContainer>
-               <p className="copyright">© 2024 SavePulse</p>
-               <SocialLinks>
-                   <li className="socialLinkItem">Twitter</li>
-                   <li className="socialLinkItem">Facebook</li>
-                   <li className="socialLinkItem">LinkedIn</li>
-                   <li className="socialLinkItem">Instagram</li>
-               </SocialLinks>
-           </FooterContainer>
-       </>
-   );
+        {/* Donor Rewards Card */}
+        <div className="card">
+          <img src="/images/img4.jpeg/" alt="Donor Rewards" className="card-image" />
+          <div className="p-4">
+            <h3 className="text-xl font-semibold mb-2">Donor Rewards</h3>
+            <p className="text-gray-600 mb-4">Earn badges and recognition for your donations</p>
+            <button className="btn-primary w-full py-2 rounded-md">View Rewards</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }

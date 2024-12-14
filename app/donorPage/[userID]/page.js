@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
+import styles from './DonorPage.module.css';
+
 export default function DonorTrackingPage() {
     const [userData, setUserData] = useState(null);
     const [donations, setDonations] = useState([]);
@@ -35,30 +37,35 @@ export default function DonorTrackingPage() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className="donor-page">
-            {userData && (
-                <div className="user-info">
-                    <h2>Welcome, {userData.firstName} {userData.lastName}</h2>
-                    <p>Email: {userData.email}</p>
+        <div className={styles.donorPage}>
+          {userData && (
+            <div className={styles.userInfo}>
+              <h2>Welcome, {userData.firstName} {userData.lastName}</h2>
+              <p>Email: {userData.email}</p>
+            </div>
+          )}
+          <h3>Your Donations</h3>
+          {donations.length === 0 ? (
+            <div className={styles.noDonations}>
+              <p>No donations found</p>
+            </div>
+          ) : (
+            <div className={styles.donationsList}>
+              {donations.map((donation, index) => (
+                <div 
+                  key={index} 
+                  className={styles.donationCard}
+                  data-status={donation.Status}
+                >
+                  <h4>Donation Details</h4>
+                  <p data-label="Date">{donation.DonationDate}</p>
+                  <p data-label="Blood Type">{donation.BloodType}</p>
+                  <p data-label="Status">{donation.Status}</p>
+                  <p data-label="Satellite ID">{donation.SatelliteID}</p>
                 </div>
-            )}
-
-            <h3>Your Donations</h3>
-            {donations.length === 0 ? (
-                <p>No donations found</p>
-            ) : (
-                <div className="donations-list">
-                    {donations.map((donation, index) => (
-                        <div key={index} className="donation-card">
-                            <h4>Donation Details</h4>
-                            <p>Date: {donation.DonationDate}</p>
-                            <p>Blood Type: {donation.BloodType}</p>
-                            <p>Status: {donation.Status}</p>
-                            <p>Satellite ID: {donation.SatelliteID}</p>
-                        </div>
-                    ))}
-                </div>
-            )}
+              ))}
+            </div>
+          )}
         </div>
-    );
-}
+      );
+    }
