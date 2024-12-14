@@ -1,23 +1,25 @@
-   "use client";
+"use client";
 import { useState } from 'react';
 
-export default function HospitalRequest() {
-    const [RequestedBY, setRequestedBy] = useState('');
-    const [UserID, setUserID] = useState('');
-    const [HospitalID, setHospitalID] = useState('');
+export default function HospitalUpdate() {
+    const [SerialID, setSerialID] = useState('');
     const [BloodType, setBloodType] = useState('');
+    const [StatusMessage, setStatusMessage] = useState('');
+    const [ContactPerson, setContactPerson] = useState('');
+    const [ContactEmail, setContactEmail] = useState('');
+    // const [BloodType, setBloodType] = useState('');
     const [message, setMessage] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
        
         try {
-            const response = await fetch('http://localhost:3000/Hospital/request', {
+            const response = await fetch('http://localhost:3000/Regional/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({RequestedBY,UserID,HospitalID,BloodType}),
+                body: JSON.stringify({SerialID,BloodType,StatusMessage,ContactEmail,ContactPerson}),
             });
 
             const data = await response.json();
@@ -25,7 +27,7 @@ export default function HospitalRequest() {
             if (response.ok) {
                 setMessage({ type: "success", text: data.message });
                 setTimeout(() => {
-                    window.location.href = '/request'; // Redirect using window.location
+                    window.location.href = '/update'; // Redirect using window.location
                 }, 1000);
             } else {
                 setMessage({ type: "error", text: data.message });
@@ -39,16 +41,20 @@ export default function HospitalRequest() {
         <>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>RequestedBY</label>
-                    <input type="text" value={RequestedBY} onChange={e => setRequestedBy(e.target.value)} required />
+                    <label>SerialID</label>
+                    <input type="text" value={SerialID} onChange={e => setSerialID(e.target.value)} required />
                 </div>
                 <div>
-                    <label>UserID</label>
-                    <input type="text" value={UserID} onChange={e => setUserID(e.target.value)} required />
+                    <label>ContactPerson</label>
+                    <input type="text" value={ContactPerson} onChange={e => setContactPerson(e.target.value)} required />
                 </div>
                 <div>
-                    <label>HospitalID</label>
-                    <input type="text" value={HospitalID} onChange={e => setHospitalID(e.target.value)} required />
+                    <label>ContactEmail</label>
+                    <input type="text" value={ContactEmail} onChange={e => setContactEmail(e.target.value)} required />
+                </div>
+                <div>
+                    <label>StatusMessage</label>
+                    <input type="text" value={StatusMessage} onChange={e => setStatusMessage(e.target.value)} required />
                 </div>
                 <div>
                     <label>BloodType</label>

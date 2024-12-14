@@ -9,6 +9,9 @@ function LandingPage() {
 <Link href="/login" className="nav-link">Log In</Link>
 <Link href="/Hospital" className="nav-link">Hospital Dashboard</Link>
 <Link href="/satelitteLogin" className="nav-link">Satelitte Log In</Link>
+<Link href="/Regional" className="nav-link">Regional Dashboard</Link>
+<Link href="/Satellite" className="nav-link">Satellite Dashboard</Link>
+<Link href="/SavePulseAdmin" className="nav-link">SavePulse Administrator</Link>
 
 
 <Link href="/satelitteSignUp" className="nav-link">Satelitte</Link>

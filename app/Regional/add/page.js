@@ -1,5 +1,72 @@
-export default function HospitalData(){
-    return(
-        <h1>This is Regional add entry page</h1>
-    )
+"use client";
+import { useState } from 'react';
+
+export default function HospitalUpdate() {
+    const [SerialID, setSerialID] = useState('');
+    const [RecievedDate, setRecievedDate] = useState('');
+    const [StatusMessage, setStatusMessage] = useState('');
+    // const [BloodType, setBloodType] = useState('');
+    const [message, setMessage] = useState(null);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+       
+        try {
+            const response = await fetch('http://localhost:3000/Regional/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({SerialID,RecievedDate,StatusMessage,}),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setMessage({ type: "success", text: data.message });
+                setTimeout(() => {
+                    window.location.href = '/add'; // Redirect using window.location
+                }, 1000);
+            } else {
+                setMessage({ type: "error", text: data.message });
+            }
+        } catch (error) {
+            setMessage({ type: "error", text: "An error occurred. Please try again." });
+        }
+    };
+
+    return (
+        <>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>SerialID</label>
+                    <input type="text" value={SerialID} onChange={e => setSerialID(e.target.value)} required />
+                </div>
+                <div>
+                    <label>RecievedDate</label>
+                    <input type="text" value={RecievedDate} onChange={e => setRecievedDate(e.target.value)} required />
+                </div>
+                <div>
+                    <label>StatusMessage</label>
+                    <input type="text" value={StatusMessage} onChange={e => setStatusMessage(e.target.value)} required />
+                </div>
+                {/* <div>
+                    <label>BloodType</label>
+                    <input type="text" value={BloodType} onChange={e => setBloodType(e.target.value)} required />
+                </div> */}
+               
+                <button type="submit">Submit</button>
+            </form>
+            {message && (
+                <p
+                    style={{
+                        color: message.type === "success" ? "green" : "red",
+                        marginTop: "10px",
+                    }}
+                >
+                    {message.text}
+                </p>
+            )}
+        </>
+    );
 }

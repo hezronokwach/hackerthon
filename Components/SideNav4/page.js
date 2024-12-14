@@ -1,19 +1,20 @@
-// SideNav.js
 import React from 'react';
 import Link from 'next/link';
-import '../../ui/sidebar.css'; // Import the CSS file
+import '../../ui/sidebar.css';
 
-export default function SideNav() {
+
+export default function SideNav4() {
     return (
         <div className="flex h-full flex-col px-3 py-4 md:px-2">
             <Link href="/" className="mb-2 flex h-20 items-end justify-start rounded-md bg-blue-600 p-4 md:h-40">
-                <div className="w-32 text-white md:w-40">Home
+                <div className="w-32 text-white md:w-40">
                 </div>
             </Link>
-            <Link href="/Hospital/" className="nav-link">Home</Link>
-            <Link href="/Hospital/add" className="nav-link">Add blood</Link>
-            <Link href="/Hospital/request" className="nav-link">Request Blood</Link>
-            <Link href="/Hospital/update" className="nav-link">Update Blood</Link>
+            <Link href="/SavePulseAdmin/" className="nav-link">Home</Link>
+            <Link href="/SavePulseAdmin/hospitalSignUp" className="nav-link">Add hospital facility</Link>
+            <Link href="/SavePulseAdmin/regionalSignUp" className="nav-link">Add regional blood bank</Link>
+            <Link href="/SavePulseAdmin/satelitteSignUp" className="nav-link">Add satellite center</Link>
+            
                 <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
 
                     <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
@@ -25,6 +26,6 @@ export default function SideNav() {
                     </form>
                 </div>
             </div>
-                );
-                }
-
+    )
+        
+}
