@@ -4,7 +4,9 @@ import styles from "./navbar.module.css";
 export default function Navbar() {
   return (
     <nav className={styles.nav}>
-      <div className={styles["nav-logo"]}>SavePulse</div>
+      <div className={styles["nav-logo"]}>
+        <Link href="/" className={styles["nav-link"]}>SavePulse</Link>
+      </div>
       <div className={styles["nav-links"]}>
         <Link href="/" className={styles["nav-link"]}>Home</Link>
         <Link href="/about" className={styles["nav-link"]}>About Us</Link>

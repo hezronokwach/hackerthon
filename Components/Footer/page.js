@@ -3,7 +3,7 @@ import styles from "./footer.module.css";
 export default function Footer() {
   return (
     <footer className={`${styles.footerdiv} mt-auto`}>
-      <p className={styles.copyright}>© 2024 LifeShare. Saving Lives Together.</p>
+      <p className={styles.copyright}>© 2024 SavePulse. Saving Lives Together.</p>
       <ul className={styles.socialLinks}>
         <li className={styles.socialLinkItem}>Twitter</li>
         <li className={styles.socialLinkItem}>Facebook</li>
