@@ -272,3 +272,33 @@ func GetUserDonations(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func HospitalRequest(c *gin.Context) {
+	var input struct {
+		HospitalID string `json:"hospitalID"`
+		BloodType  string `json:"bloodType"`
+		RequestedBy string `json:"requestedBy"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+
+	
+	request := models.HospitalRequest{
+		HospitalID: input.HospitalID,
+		BloodType:  input.BloodType,
+		RequestedBy: input.RequestedBy,
+		Status:      "Pending",
+		CreatedAt:   time.Now(),
+	}
+
+	if err := initializers.DB.Create(&request).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create request"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Blood request submitted successfully"})
+}
+

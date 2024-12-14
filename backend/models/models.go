@@ -111,3 +111,20 @@ func (satelitte *Emergency) BeforeCreate(tx *gorm.DB) (err error) {
 	satelitte.EmergencyID = generateShortID()
 	return
 }
+
+type HospitalRequest struct {
+	RequestID          string      `gorm:"primaryKey" json:"id"`
+	HospitalID  string    `json:"hospitalID"`
+	BloodType   string    `json:"bloodType"`
+	// UnitsNeeded int       `json:"unitsNeeded"`
+	RequestedBy string    `json:"requestedBy"`
+	Status      string    `json:"status"`
+	ApproverID  string    `json:"approverID,omitempty"`
+	CreatedAt   time.Time `json:"createdAt"`
+	ApprovedAt  time.Time `json:"approvedAt,omitempty"`
+}
+
+func (satelitte *HospitalRequest) BeforeCreate(tx *gorm.DB) (err error) {
+	satelitte.RequestID = generateShortID()
+	return
+}
