@@ -25,7 +25,7 @@
     width: 100%;
     max-width: 500px;
     background-color: rgba(161, 152, 152, 0.2); /* Glassy background */
-    backdrop-filter: blur(10px); /* Blur effect */
+    backdrop-filter: blur(70px); /* Blur effect */
     border: 1px solid rgba(255, 255, 255, 0.125);
     border-radius: 16px;
     padding: 2rem;
@@ -33,10 +33,10 @@
     transition: all 0.3s ease;
 }
 
-.form:hover {
+/* .form:hover {
     transform: scale(1.02);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-}
+} */
 
 .formGroup {
     display: flex;
@@ -47,6 +47,7 @@
 .formGroup label {
     margin-bottom: 0.5rem;
     font-weight: 600;
+    font-size: large;
     color: #333;
     transition: color 0.3s ease;
 }
