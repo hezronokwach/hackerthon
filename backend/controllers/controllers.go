@@ -209,9 +209,8 @@ func GetUserDonations(c *gin.Context) {
 			if donation.Status == "discarded" {
 				donation.Feedback = "Please visit the next health center for consultation."
 			}
-			if donation.Status == "Compatible"{
+			if donation.Status == "Compatible" {
 				donation.Feedback = "You have saved a life."
-
 			}
 		} else if donation.SourceType == "satellite" {
 			var satellites []models.Satelitte
@@ -223,10 +222,9 @@ func GetUserDonations(c *gin.Context) {
 				facilityName = satellites[0].SatelitteName
 			}
 		} else if donation.SourceType == "hospital" {
-			// Implement hospital logic here
 			var hospital []models.Hospital
 			if err := initializers.DB.Where("hospital_id = ?", donation.HospitalID).Find(&hospital).Error; err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch satellite information"})
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch hospital information"})
 				return
 			}
 			if len(hospital) > 0 {
@@ -235,14 +233,28 @@ func GetUserDonations(c *gin.Context) {
 		}
 
 		enrichedDonations = append(enrichedDonations, gin.H{
-			"DonationDate": donation.DonationDate,
-			"BloodType":    donation.BloodType,
-			"Status":       donation.Status,
+			"DonationDate":  donation.DonationDate,
+			"BloodType":     donation.BloodType,
+			"Status":        donation.Status,
 			"PatientUserID": donation.PatientUserID,
 			"PatientNumber": donation.PatientNumber,
-			"FacilityName": facilityName,
-			"Feedback":     donation.Feedback, // Include feedback in the response
+			"FacilityName":  facilityName,
+			"Feedback":      donation.Feedback,
 		})
+	}
+
+	// Check for emergencies and add emergency details if any
+	var emergencyDetails []gin.H
+	// Example logic to fetch emergency details
+	var emergencies []models.Emergency
+	if err := initializers.DB.Find(&emergencies).Error; err == nil && len(emergencies) > 0 {
+		for _, emergency := range emergencies {
+			emergencyDetails = append(emergencyDetails, gin.H{
+				"BloodType":     emergency.BloodType,
+				"RegionLocation": emergency.RegionLocation,
+				"Message":       "Please donate blood at the nearest regional center.",
+			})
+		}
 	}
 
 	response := gin.H{
@@ -252,6 +264,7 @@ func GetUserDonations(c *gin.Context) {
 			"email":     user.Email,
 		},
 		"donations": enrichedDonations,
+		"emergencies": emergencyDetails, // Include emergency details in the response
 	}
 
 	c.JSON(http.StatusOK, response)

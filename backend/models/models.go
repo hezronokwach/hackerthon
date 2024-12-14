@@ -49,18 +49,18 @@ func (satelitte *Satelitte) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 type DonorBlood struct {
-	BloodID      string //`gorm:"primaryKey"`
-	UserID       string // foreign key
-	DonationDate string
-	BloodType    string
-	Status       string
-	SatelliteID  string // foreign key
-	RegionalID   string // foreign key
-	HospitalID   string
-    PatientNumber string
-    PatientUserID string
-	Feedback     string
-	SourceType   string // New field to track the source
+	BloodID       string //`gorm:"primaryKey"`
+	UserID        string // foreign key
+	DonationDate  string
+	BloodType     string
+	Status        string
+	SatelliteID   string // foreign key
+	RegionalID    string // foreign key
+	HospitalID    string
+	PatientNumber string
+	PatientUserID string
+	Feedback      string
+	SourceType    string // New field to track the source
 }
 
 func (donorBlood *DonorBlood) BeforeCreate(tx *gorm.DB) (err error) {
@@ -96,5 +96,18 @@ type Hospital struct {
 
 func (satelitte *Hospital) BeforeCreate(tx *gorm.DB) (err error) {
 	satelitte.HospitalID = generateShortID()
+	return
+}
+
+type Emergency struct {
+	EmergencyID      string `gorm:"primaryKey;not null"`
+	HospitalID       string
+	RegionalID       string
+	RegionLocation string 
+	BloodType string
+}
+
+func (satelitte *Emergency) BeforeCreate(tx *gorm.DB) (err error) {
+	satelitte.EmergencyID = generateShortID()
 	return
 }

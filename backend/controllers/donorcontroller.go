@@ -171,3 +171,43 @@ func HospitalUpdate(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Donation request submitted successfully"})
 }
+
+func EmergencyRequest(c *gin.Context) {
+	var request struct {
+		BloodType  string `json:"bloodType" binding:"required"`
+		HospitalID string `json:"hospitalID" binding:"required"`
+		RegionalID string `json:"regionalID" binding:"required"`
+	}
+
+	// Bind JSON input to the request struct
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid input"})
+		return
+	}
+
+	// Query the Regional table to get the RegionLocation
+	var regional models.Regional
+	if err := initializers.DB.Where("region_id = ?", request.RegionalID).First(&regional).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not find regional information"})
+		return
+	}
+
+	// Create a new emergency record
+	emergency := models.Emergency{
+		HospitalID:     request.HospitalID,
+		RegionalID:     request.RegionalID,
+		RegionLocation: regional.RegionLocation,
+		BloodType:      request.BloodType,
+	}
+
+	// Save the record to the database
+	if err := initializers.DB.Create(&emergency).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not save emergency request"})
+		return
+	}
+
+	// Respond with success message
+	c.JSON(http.StatusOK, gin.H{"message": "Emergency request submitted successfully"})
+}
+
+

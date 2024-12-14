@@ -9,7 +9,7 @@ import (
 // initializers/syncDb.go
 func SyncDb() {
 	log.Println("Starting database migration...")
-	err := DB.AutoMigrate(&models.User{}, &models.Satelitte{}, &models.DonorBlood{}, &models.Hospital{}, &models.Regional{})
+	err := DB.AutoMigrate(&models.User{}, &models.Satelitte{}, &models.DonorBlood{}, &models.Hospital{}, &models.Regional{}, &models.Emergency{})
 	if err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}

@@ -38,7 +38,7 @@ func main() {
 	router.POST("/regional/update", controllers.RegionUpdate)
 	router.POST("/hospitalDashboard/update", controllers.HospitalUpdate)
 	router.GET("/hospital", controllers.Hospital)
-
+	router.POST("/hospitalDashboard", controllers.EmergencyRequest)
 
 	// Run the server on port 3000
 	router.Run(":3000")

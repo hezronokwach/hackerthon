@@ -9,9 +9,7 @@ function LandingPage() {
 <Link href="/login" className="nav-link">Donor Log In</Link>
 <Link href="/satelitteLogin" className="nav-link">Satelitte Log In</Link>
 <Link href="/satelitteDashboard/add" className="nav-link">Donor Details</Link>
-
 <Link href="/satelitteSignUp" className="nav-link">Satelitte Sign up</Link>
-
     </div>
   
   )
