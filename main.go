@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 
 	"authorization/backend/controllers"
 	"authorization/backend/initializers"
@@ -27,7 +28,7 @@ func main() {
 	}))
 
 	// Define the /signin route
-	router.POST("/signup", controllers.SignUp)	
+	router.POST("/signup", controllers.SignUp)
 	router.POST("/login", controllers.Login)
 	router.POST("/satellite", controllers.Satelitte)
 	router.POST("/satelitteLogin", controllers.SatelitteLogin)
@@ -35,9 +36,5 @@ func main() {
 	router.GET("/region", controllers.Region)
 	router.GET("/donorPage/:userID", controllers.GetUserDonations)
 
-
-
-
-	// Run the server on port 3000
-	router.Run(":3000")
+	http.Handle("/", router)
 }
