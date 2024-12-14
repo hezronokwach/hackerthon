@@ -25,7 +25,7 @@ export default function LandingPage() {
             <span className="font-semibold text-gray-800">Donor Login</span>
           </Link>
           
-          <Link href="/satelitteLogin" className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 text-center">
+          {/* <Link href="/satelitteLogin" className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 text-center">
             <div className="mx-auto mb-2 text-red-600 text-4xl">🏥</div>
             <span className="font-semibold text-gray-800">Satellite Login</span>
           </Link>
@@ -34,6 +34,13 @@ export default function LandingPage() {
             <div className="mx-auto mb-2 text-red-600 text-4xl">➕</div>
             <span className="font-semibold text-gray-800">Satellite Sign Up</span>
           </Link>
+
+          <Link href="/satelitteSignUp" className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition duration-300 text-center">
+            <div className="mx-auto mb-2 text-red-600 text-4xl">➕</div>
+            <span className="font-semibold text-gray-800">Satellite Sign Up</span>
+          </Link> */}
+
+          
         </div>
       </div>
 

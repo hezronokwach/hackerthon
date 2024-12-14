@@ -15,7 +15,7 @@
     width: 100%;
     max-width: 500px;
     background-color: rgba(161, 152, 152, 0.2); /* Glassy background */
-    backdrop-filter: blur(10px); /* Blur effect */
+    backdrop-filter: blur(5px); /* Blur effect */
     border: 1px solid rgba(255, 255, 255, 0.125);
     border-radius: 16px;
     padding: 2rem;
