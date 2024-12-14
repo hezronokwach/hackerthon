@@ -209,5 +209,3 @@ func EmergencyRequest(c *gin.Context) {
 	// Respond with success message
 	c.JSON(http.StatusOK, gin.H{"message": "Emergency request submitted successfully"})
 }
-
-

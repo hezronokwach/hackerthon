@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import styles from './Login.module.css';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -7,57 +8,77 @@ export default function Login() {
     const [message, setMessage] = useState(null);
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        const response = await fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
+        e.preventDefault();
+        try {
+            const response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (response.ok) {
-            // Store the userID returned from the backend
-            localStorage.setItem('userID', data.userID);
-            setMessage({ type: "success", text: data.message });
-            setTimeout(() => {
-                window.location.href = `/donorPage/${data.userID}`;
-            }, 1000);
-        } else {
-            setMessage({ type: "error", text: data.message });
+            if (response.ok) {
+                // Store the userID returned from the backend
+                localStorage.setItem('userID', data.userID);
+                setMessage({ type: "success", text: data.message });
+                setTimeout(() => {
+                    window.location.href = `/donorPage/${data.userID}`;
+                }, 1000);
+            } else {
+                setMessage({ type: "error", text: data.message });
+            }
+        } catch (error) {
+            setMessage({ type: "error", text: "An error occurred. Please try again." });
         }
-    } catch (error) {
-        setMessage({ type: "error", text: "An error occurred. Please try again." });
-    }
-};
+    };
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email</label>
-                    <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+        <div className={styles.container}>
+            <h1 className={styles.pageTitle}>Donor Login</h1>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <div className={styles.formGroup}>
+                    <label htmlFor="email">Email</label>
+                    <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        className={styles.input}
+                        placeholder="Enter your email"
+                        required 
+                    />
                 </div>
-                <div>
-                    <label>Password</label>
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+
+                <div className={styles.formGroup}>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        className={styles.input}
+                        placeholder="Enter your password"
+                        required 
+                    />
                 </div>
-               
-                <button type="submit">Submit</button>
+
+                <button type="submit" className={styles.submitButton}>
+                    Submit
+                </button>
             </form>
+
             {message && (
-                <p
-                    style={{
-                        color: message.type === "success" ? "green" : "red",
-                        marginTop: "10px",
-                    }}
-                >
+                <p className={`${styles.message} ${
+                    message.type === "success" 
+                        ? styles.successMessage 
+                        : styles.errorMessage
+                }`}>
                     {message.text}
                 </p>
             )}
-        </>
+        </div>
     );
 }

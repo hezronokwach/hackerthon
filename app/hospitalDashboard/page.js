@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import styles from './EmergencyBloodRequest.module.css';
 
 export default function EmergencyBloodRequest() {
     const [showForm, setShowForm] = useState(false);
@@ -35,48 +36,70 @@ export default function EmergencyBloodRequest() {
     };
 
     return (
-        <>
-            <button onClick={() => setShowForm(!showForm)}>
-                Emergency Request
-            </button>
-            {showForm && (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Blood Type</label>
-                        <select value={bloodType} onChange={e => setBloodType(e.target.value)} required>
-                            <option value="">Select Blood Type</option>
-                            <option value="All">All</option>                            
-                            <option value="A+">A+</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-                            <option value="AB+">AB+</option>
-                            <option value="AB-">AB-</option>
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Hospital ID</label>
-                        <input type="text" value={hospitalID} onChange={e => setHospitalID(e.target.value)} required />
-                    </div>
-                    <div>
-                        <label>Regional ID</label>
-                        <input type="text" value={regionalID} onChange={e => setRegionalID(e.target.value)} required />
-                    </div>
-                    <button type="submit">Submit</button>
-                </form>
-            )}
-            {message && (
-                <p
-                    style={{
-                        color: message.type === "success" ? "green" : "red",
-                        marginTop: "10px",
-                    }}
+        <div className={styles.container}>
+            <div className={styles.form}>
+                <h2>Emergency Blood Request</h2>
+                <button 
+                    onClick={() => setShowForm(!showForm)} 
+                    className={styles.redButton}
                 >
-                    {message.text}
-                </p>
-            )}
-        </>
+                    {showForm ? "Hide Form" : "Call for Emergency"}
+                </button>
+                {showForm && (
+                    <form onSubmit={handleSubmit}>
+                        <div className={styles.formGroup}>
+                            <label>Blood Type</label>
+                            <select
+                                className={styles.select}
+                                value={bloodType}
+                                onChange={(e) => setBloodType(e.target.value)}
+                                required
+                            >
+                                <option value="">Select Blood Type</option>
+                                <option value="All">All</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label>Hospital ID</label>
+                            <input
+                                className={styles.input}
+                                type="text"
+                                value={hospitalID}
+                                onChange={(e) => setHospitalID(e.target.value)}
+                                required
+                                placeholder="Enter Hospital ID"
+                            />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label>Regional ID</label>
+                            <input
+                                className={styles.input}
+                                type="text"
+                                value={regionalID}
+                                onChange={(e) => setRegionalID(e.target.value)}
+                                required
+                                placeholder="Enter Regional ID"
+                            />
+                        </div>
+                        <button type="submit" className={styles.submitButton}>
+                            Submit
+                        </button>
+                    </form>
+                )}
+                {message && (
+                    <div className={`${styles.message} ${message.type === 'success' ? styles.successMessage : styles.errorMessage}`}>
+                        {message.text}
+                    </div>
+                )}
+            </div>
+        </div>
     );
 }

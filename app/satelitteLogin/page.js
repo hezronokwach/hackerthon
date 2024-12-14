@@ -1,6 +1,6 @@
-
 "use client";
 import { useState } from 'react';
+import styles from './Login.module.css'; // Importing the CSS Module
 
 export default function Login() {
     const [satelitteID, setSatelitteID] = useState('');
@@ -36,22 +36,46 @@ export default function Login() {
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>SatelitteID</label>
-                    <input type="text" value={satelitteID} onChange={e => setSatelitteID(e.target.value)} required />
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <h2>Satellite Login</h2>
+                <div className={styles.formGroup}>
+                    <label htmlFor="satelitteID">Satellite ID</label>
+                    <input 
+                        id="satelitteID"
+                        type="text" 
+                        value={satelitteID} 
+                        onChange={e => setSatelitteID(e.target.value)} 
+                        placeholder="Enter Satellite ID"
+                        required 
+                        className={styles.input} 
+                    />
                 </div>
-                <div>
-                    <label>Email</label>
-                    <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+                <div className={styles.formGroup}>
+                    <label htmlFor="email">Email</label>
+                    <input 
+                        id="email"
+                        type="email" 
+                        value={email} 
+                        onChange={e => setEmail(e.target.value)} 
+                        placeholder="Enter your email"
+                        required 
+                        className={styles.input}
+                    />
                 </div>
-                <div>
-                    <label>Password</label>
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+                <div className={styles.formGroup}>
+                    <label htmlFor="password">Password</label>
+                    <input 
+                        id="password"
+                        type="password" 
+                        value={password} 
+                        onChange={e => setPassword(e.target.value)} 
+                        placeholder="Enter your password"
+                        required 
+                        className={styles.input}
+                    />
                 </div>
-               
-                <button type="submit">Submit</button>
+                <button type="submit" className={styles.submitButton}>Submit</button>
             </form>
             {message && (
                 <p
@@ -63,6 +87,6 @@ export default function Login() {
                     {message.text}
                 </p>
             )}
-        </>
+        </div>
     );
 }
