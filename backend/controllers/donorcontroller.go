@@ -2,11 +2,13 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"authorization/backend/initializers"
 	"authorization/backend/models"
 	"authorization/backend/utils"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -114,6 +116,53 @@ func RegionUpdate(c *gin.Context) {
 		Status:       donorInput.Status,
 		SourceType:   donorInput.SourceType, // Set the source type
 	}
+
+	if err := initializers.DB.Create(&donor).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create donor record"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Donation request submitted successfully"})
+}
+
+func HospitalUpdate(c *gin.Context) {
+	var hospitalInput struct {
+		SerialId      string `json:"bloodID"`
+		HospitalID    string `json:"hospitalID"`
+		PatientUserID string `json:"patientUserID"`
+		PatientNumber string `json:"patientNumber"`
+		Status        string `json:"status"`
+		SourceType    string `json:"sourceType"` // New field
+	}
+
+	if err := c.ShouldBindJSON(&hospitalInput); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid input"})
+		return
+	}
+
+	// Query the satellite record to find the UserID associated with the BloodID
+	var regionalData models.DonorBlood
+	if err := initializers.DB.Where("blood_id = ? AND source_type = ?", hospitalInput.SerialId, "regional").First(&regionalData).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not find satellite record"})
+		return
+	}
+	log.Printf("Regional Data: %+v\n", regionalData)
+	formattedTime := utils.GetCurrentTimeInNairobi() // Format as YYYY-MM-DD HH:MM:SS
+
+	// Create the DonorBlood record for the regional process
+	donor := models.DonorBlood{
+		BloodID:       hospitalInput.SerialId,
+		UserID:        regionalData.UserID, // Set the UserID from the satellite record
+		DonationDate:  formattedTime,       // Set the auto-generated date and time
+		HospitalID:    hospitalInput.HospitalID,
+		//BloodType:     regionalData.BloodType,
+		PatientUserID: hospitalInput.PatientUserID,
+		PatientNumber: hospitalInput.PatientNumber,
+		Status:        hospitalInput.Status,
+		SourceType:    hospitalInput.SourceType, // Set the source type
+	}
+	log.Printf("Regional Data: %+v\n", donor)
+
 
 	if err := initializers.DB.Create(&donor).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create donor record"})

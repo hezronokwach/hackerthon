@@ -56,6 +56,9 @@ type DonorBlood struct {
 	Status       string
 	SatelliteID  string // foreign key
 	RegionalID   string // foreign key
+	HospitalID   string
+    PatientNumber string
+    PatientUserID string
 	Feedback     string
 	SourceType   string // New field to track the source
 }
@@ -76,19 +79,21 @@ type Regional struct {
 	ContactEmail    string `gorm:"not null"`
 	ContactPassword string `gorm:"not null"`
 }
+
 func (satelitte *Regional) BeforeCreate(tx *gorm.DB) (err error) {
 	satelitte.RegionID = generateShortID()
 	return
 }
 
 type Hospital struct {
-	HospitalID        string `gorm:"primaryKey;not null"`
-	HospitalName      string `gorm:"not null"`
-	HospitalLocation  string `gorm:"not null"`
-	ContactPerson   string `gorm:"not null"`
-	ContactEmail    string `gorm:"not null"`
-	ContactPassword string `gorm:"not null"`
+	HospitalID       string `gorm:"primaryKey;not null"`
+	HospitalName     string `gorm:"not null"`
+	HospitalLocation string `gorm:"not null"`
+	ContactPerson    string `gorm:"not null"`
+	ContactEmail     string `gorm:"not null"`
+	ContactPassword  string `gorm:"not null"`
 }
+
 func (satelitte *Hospital) BeforeCreate(tx *gorm.DB) (err error) {
 	satelitte.HospitalID = generateShortID()
 	return

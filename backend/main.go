@@ -36,7 +36,9 @@ func main() {
 	router.GET("/donorPage/:userID", controllers.GetUserDonations)
 	router.POST("/regional/add", controllers.RegionBlood)
 	router.POST("/regional/update", controllers.RegionUpdate)
+	router.POST("/hospitalDashboard/update", controllers.HospitalUpdate)
 	router.GET("/hospital", controllers.Hospital)
+
 
 	// Run the server on port 3000
 	router.Run(":3000")

@@ -13,7 +13,7 @@ import (
 
 func SignUp(c *gin.Context) {
 	var SignupInput struct {
-		//UserID      string `json:"userID"`
+		// UserID      string `json:"userID"`
 		Email       string `json:"email" binding:"required"`
 		Password    string `json:"password" binding:"required"`
 		PhoneNumber string `json:"phoneNumber"`
@@ -27,7 +27,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	user := models.User{
-		//UserID:      SignupInput.UserID,
+		// UserID:      SignupInput.UserID,
 		Email:       SignupInput.Email,
 		Password:    SignupInput.Password,
 		PhoneNumber: SignupInput.PhoneNumber,
@@ -70,7 +70,7 @@ func Login(c *gin.Context) {
 
 func Satelitte(c *gin.Context) {
 	var satellite struct {
-		//ID                string `json:"satelliteID"`
+		// ID                string `json:"satelliteID"`
 		SatelitteName     string `json:"satelliteName"`
 		SatelitteLocation string `json:"satelliteLocation"`
 		ContactPerson     string `json:"contactPerson"`
@@ -83,14 +83,14 @@ func Satelitte(c *gin.Context) {
 	}
 
 	satellite1 := models.Satelitte{
-		//SatelitteID:       satellite.ID,
+		// SatelitteID:       satellite.ID,
 		SatelitteName:     satellite.SatelitteName,
 		SatelitteLocation: satellite.SatelitteLocation,
 		ContactPerson:     satellite.ContactPerson,
 		ContactEmail:      satellite.ContactEmail,
 		ContactPassword:   satellite.ContactPassword,
 	}
-	//fmt.Println("satelitte id", satellite.ID)
+	// fmt.Println("satelitte id", satellite.ID)
 	if err := initializers.DB.Create(&satellite1).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Could not create user"})
 		return
@@ -105,7 +105,7 @@ func SatelitteLogin(c *gin.Context) {
 		Email    string `json:"email" binding:"required"`
 		Password string `json:"password" binding:"required"`
 	}
-	//fmt.Println("id", SatelitteInput.ID)
+	// fmt.Println("id", SatelitteInput.ID)
 	if err := c.ShouldBindJSON(&SatelitteInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid input"})
 		return
@@ -125,11 +125,11 @@ func SatelitteLogin(c *gin.Context) {
 
 func Region(c *gin.Context) {
 	regional := models.Regional{
-		RegionName:     "Mombasa Safe",
-		RegionLocation: "Mombasa",
-		ContactPerson:     "Brian",
-		ContactEmail:      "brian@gmail.com",
-		ContactPassword:   "12",
+		RegionName:      "Mombasa Safe",
+		RegionLocation:  "Mombasa",
+		ContactPerson:   "Brian",
+		ContactEmail:    "brian@gmail.com",
+		ContactPassword: "12",
 	}
 
 	if err := initializers.DB.Create(&regional).Error; err != nil {
@@ -141,13 +141,12 @@ func Region(c *gin.Context) {
 }
 
 func Hospital(c *gin.Context) {
-
 	hospital := models.Hospital{
 		HospitalName:     "Mombasa Provisional",
 		HospitalLocation: "Mombasa",
-		ContactPerson:     "Dan",
-		ContactEmail:      "Dan@gmail.com",
-		ContactPassword:   "12",
+		ContactPerson:    "Dan",
+		ContactEmail:     "Dan@gmail.com",
+		ContactPassword:  "12",
 	}
 	if err := initializers.DB.Create(&hospital).Error; err != nil {
 		log.Printf("Error creating regional record: %v", err)
@@ -210,6 +209,10 @@ func GetUserDonations(c *gin.Context) {
 			if donation.Status == "discarded" {
 				donation.Feedback = "Please visit the next health center for consultation."
 			}
+			if donation.Status == "Compatible"{
+				donation.Feedback = "You have saved a life."
+
+			}
 		} else if donation.SourceType == "satellite" {
 			var satellites []models.Satelitte
 			if err := initializers.DB.Where("satelitte_id = ?", donation.SatelliteID).Find(&satellites).Error; err != nil {
@@ -221,12 +224,22 @@ func GetUserDonations(c *gin.Context) {
 			}
 		} else if donation.SourceType == "hospital" {
 			// Implement hospital logic here
+			var hospital []models.Hospital
+			if err := initializers.DB.Where("hospital_id = ?", donation.HospitalID).Find(&hospital).Error; err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch satellite information"})
+				return
+			}
+			if len(hospital) > 0 {
+				facilityName = hospital[0].HospitalName
+			}
 		}
 
 		enrichedDonations = append(enrichedDonations, gin.H{
 			"DonationDate": donation.DonationDate,
 			"BloodType":    donation.BloodType,
 			"Status":       donation.Status,
+			"PatientUserID": donation.PatientUserID,
+			"PatientNumber": donation.PatientNumber,
 			"FacilityName": facilityName,
 			"Feedback":     donation.Feedback, // Include feedback in the response
 		})
