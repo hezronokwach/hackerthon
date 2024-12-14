@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"authorization/backend/controllers"
 	"authorization/backend/initializers"
@@ -36,5 +35,6 @@ func main() {
 	router.GET("/region", controllers.Region)
 	router.GET("/donorPage/:userID", controllers.GetUserDonations)
 
-	http.Handle("/", router)
+	// http.Handle("/", router)
+	router.Run(":3000")
 }
