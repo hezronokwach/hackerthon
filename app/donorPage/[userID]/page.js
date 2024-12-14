@@ -14,7 +14,7 @@ export default function DonorTrackingPage() {
         const fetchData = async () => {
             try {
                 const userID = params.userID;
-                const response = await fetch(`http://localhost:3000/donorPage/${userID}?bloodID=${bloodID}`);
+                const response = await fetch(`http://localhost:3000/donorPage/${userID}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

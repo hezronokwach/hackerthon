@@ -156,7 +156,6 @@ func Hospital(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Hospital created successfully"})
 }
-
 func GetUserDonations(c *gin.Context) {
 	userID := c.Param("userID")
 	bloodID := c.Query("bloodID") // Change to Query parameter instead of Path parameter
