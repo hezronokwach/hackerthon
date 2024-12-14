@@ -1,6 +1,6 @@
-
 "use client";
 import { useState } from 'react';
+import styles from './RegionalAddBlood.module.css'; // Ensure the module CSS is imported
 
 export default function RegionalAddBlood() {
     const [bloodID, setserialID] = useState('');
@@ -9,6 +9,7 @@ export default function RegionalAddBlood() {
     const [patientNumber, setpatientNumber] = useState('');
     const [status, setStatus] = useState('');
     const [message, setMessage] = useState(null);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -23,15 +24,12 @@ export default function RegionalAddBlood() {
                     patientUserID,
                     patientNumber,
                     status,
-
-                    sourceType: 'hospital' // Specify the source type
+                    sourceType: 'hospital', // Specify the source type
                 }),
             });
             const data = await response.json();
             if (response.ok) {
                 setMessage({ type: "success", text: data.message });
-                // window.location.href = '/';
-
             } else {
                 setMessage({ type: "error", text: data.message });
             }
@@ -41,47 +39,86 @@ export default function RegionalAddBlood() {
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Blood serial ID</label>
-                    <input type="text" value={bloodID} onChange={e => setserialID(e.target.value)} required />
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+            <h2 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '1rem', fontSize: '2.0rem' }}>
+    Update Blood Details
+</h2>
+
+                <div className={styles.formGroup}>
+                    <label>Blood Serial ID</label>
+                    <input
+                        type="text"
+                        className={styles.input}
+                        placeholder="Enter Blood Serial ID"
+                        value={bloodID}
+                        onChange={(e) => setserialID(e.target.value)}
+                        required
+                    />
                 </div>
-                <div>
+                <div className={styles.formGroup}>
                     <label>Hospital ID</label>
-                    <input type="text" value={hospitalID} onChange={e => sethospitalID(e.target.value)} required />
+                    <input
+                        type="text"
+                        className={styles.input}
+                        placeholder="Enter Hospital ID"
+                        value={hospitalID}
+                        onChange={(e) => sethospitalID(e.target.value)}
+                        required
+                    />
                 </div>
-
-                <div>
+                <div className={styles.formGroup}>
                     <label>Patient User ID</label>
-                    <input type="text" value={patientUserID} onChange={e => setpatientUserID(e.target.value)} required />
+                    <input
+                        type="text"
+                        className={styles.input}
+                        placeholder="Enter Patient User ID"
+                        value={patientUserID}
+                        onChange={(e) => setpatientUserID(e.target.value)}
+                        required
+                    />
                 </div>
-
-                <div>
+                <div className={styles.formGroup}>
                     <label>Patient Number</label>
-                    <input type="text" value={patientNumber} onChange={e => setpatientNumber(e.target.value)} required />
+                    <input
+                        type="text"
+                        className={styles.input}
+                        placeholder="Enter Patient Number"
+                        value={patientNumber}
+                        onChange={(e) => setpatientNumber(e.target.value)}
+                        required
+                    />
                 </div>
-
-                <div>
+                <div className={styles.formGroup}>
                     <label>Status</label>
-                    <select value={status} onChange={e => setStatus(e.target.value)} required>
+                    <select
+                        className={styles.input}
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                        required
+                    >
+                        <option value="" disabled>
+                            Select Status
+                        </option>
                         <option value="compatible">Compatible</option>
                         <option value="incompatible">Incompatible</option>
                     </select>
                 </div>
-
-                <button type="submit">Submit</button>
+                <button type="submit" className={styles.submitButton}>
+                    Submit
+                </button>
+                {message && (
+                    <p
+                        className={`${styles.message} ${
+                            message.type === "success"
+                                ? styles.successMessage
+                                : styles.errorMessage
+                        }`}
+                    >
+                        {message.text}
+                    </p>
+                )}
             </form>
-            {message && (
-                <p
-                    style={{
-                        color: message.type === "success" ? "green" : "red",
-                        marginTop: "10px",
-                    }}
-                >
-                    {message.text}
-                </p>
-            )}
-        </>
+        </div>
     );
 }
