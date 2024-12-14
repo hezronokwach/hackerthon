@@ -1,121 +1,74 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Global styles for the HTML body */
+:root {
+    --primary-color: #E60000;
+    --secondary-color: #FF3333;
+    --background-color: #F5F5F5;
+}
+
+html, body {
+  height: 100%;
+}
+
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Nunito', sans-serif;
-  background-color: #f2f2f2;
-  color: #333;
-  line-height: 1.6;
-  display: flex;
-  flex-direction: column; /* Allow for flexible layout */
-  min-height: 100vh; /* Ensure full height */
+  background-color: var(--background-color);
+  font-family: 'Arial', sans-serif;
+
+  /* Add background image using Tailwind's utility classes */
+  background-image: url('/images/img7.jpg/'); /* Path to the background image */
+  background-size: cover; /* Ensures the image covers the entire viewport */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents repeating the background image */
+  background-attachment: fixed; /* Keeps the background fixed when scrolling */
 }
 
-/* Header styles */
-header {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  
+  /* Add these properties to center the grid */
+  justify-content: center; /* Horizontally centers the entire grid */
+  justify-items: center;   /* Centers each grid item horizontally */
+  max-width: 1200px;       /* Optional: limits max width and centers grid */
+  margin: 0 auto;          /* Centers the grid container itself */
 }
 
-/* Navigation styles */
-nav {
-  margin: 10px auto 80px;
-  padding: 10px 0;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  border-bottom: 1px solid #ddd;
-}
-
-/* Main content styles */
-main {
-  padding: 20px;
-  flex-grow: 1; /* Allow main to grow and take available space */
-}
-
-/* Footer styles */
-.footerdiv {
-  text-align: center;
-  padding: 30px 0;
-  margin-top: auto; /* Push footer to bottom of page */
-  color: #777;
-  border-top: 1px solid #eaeaea;
-  background-color: #333;
-}
-
-.footerdiv p {
-  margin: 0;
-}
-
-.footerdiv ul {
-  list-style: none;
-  padding: 0;
-}
-
-.footerdiv li {
-  cursor: pointer;
-}
-
-.footerdiv li:hover {
-  text-decoration: underline;
-}
-
-/* Other styles remain unchanged... */
-
-/* Example donation card styles */
-.donation-card {
+.card {
     background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* LandingPage.module.css */
-.nav-link {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px 15px;
-    text-decoration: none;
-    color: #ffffff; /* White text color */
-    background-color: #0070f3; /* Blue background */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s ease; /* Smooth transition */
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-.nav-link:hover {
-    background-color: #005bb5; /* Darker blue on hover */
+.card-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
 }
 
-/* Global CSS */
-
-.emergency-info {
-    background-color: #ffefef; /* Light red background to indicate urgency */
-    border: 1px solid #ff4d4d; /* Red border for emphasis */
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    transition: background-color 0.3s ease;
 }
 
-.emergency-info h3 {
-    color: #d32f2f; /* Darker red for the heading */
-    margin-bottom: 10px;
+.btn-primary:hover {
+    background-color: var(--secondary-color);
 }
 
-.emergency-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-
-.emergency-card p {
-    margin: 5px 0;
-    color: #333; /* Dark text for readability */
+@media (max-width: 768px) {
+    .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        grid-gap: 10px;
+        padding: 10px;
+    }
 }
