@@ -159,6 +159,7 @@ func Hospital(c *gin.Context) {
 
 func GetUserDonations(c *gin.Context) {
 	userID := c.Param("userID")
+	bloodID := c.Query("bloodID") // Change to Query parameter instead of Path parameter
 
 	// Get user details
 	var user models.User
@@ -169,33 +170,25 @@ func GetUserDonations(c *gin.Context) {
 
 	var donations []models.DonorBlood
 
-	// Check for hospital donations first
-	if err := initializers.DB.Where("user_id = ? AND source_type = ?", userID, "hospital").Find(&donations).Error; err != nil {
+	// Base query with userID
+	query := initializers.DB.Where("user_id = ?", userID)
+	
+	// Add bloodID filter only if it's provided
+	if bloodID != "" {
+		query = query.Where("blood_id = ?", bloodID)
+	}
+	// Execute the query
+	if err := query.Find(&donations).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch donations"})
 		return
-	}
-
-	// If no hospital donations, check for regional donations
-	if len(donations) == 0 {
-		if err := initializers.DB.Where("user_id = ? AND source_type = ?", userID, "regional").Find(&donations).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch donations"})
-			return
-		}
-	}
-
-	// If no regional donations, check for satellite donations
-	if len(donations) == 0 {
-		if err := initializers.DB.Where("user_id = ? AND source_type = ?", userID, "satellite").Find(&donations).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch donations"})
-			return
-		}
 	}
 
 	var enrichedDonations []gin.H
 
 	for _, donation := range donations {
 		var facilityName string
-		if donation.SourceType == "regional" {
+		switch donation.SourceType {
+		case "regional":
 			var regionals []models.Regional
 			if err := initializers.DB.Where("region_id = ?", donation.RegionalID).Find(&regionals).Error; err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch regional information"})
@@ -204,15 +197,7 @@ func GetUserDonations(c *gin.Context) {
 			if len(regionals) > 0 {
 				facilityName = regionals[0].RegionName
 			}
-
-			// Check if the status is "discarded"
-			if donation.Status == "discarded" {
-				donation.Feedback = "Please visit the next health center for consultation."
-			}
-			if donation.Status == "Compatible" {
-				donation.Feedback = "You have saved a life."
-			}
-		} else if donation.SourceType == "satellite" {
+		case "satellite":
 			var satellites []models.Satelitte
 			if err := initializers.DB.Where("satelitte_id = ?", donation.SatelliteID).Find(&satellites).Error; err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch satellite information"})
@@ -221,15 +206,23 @@ func GetUserDonations(c *gin.Context) {
 			if len(satellites) > 0 {
 				facilityName = satellites[0].SatelitteName
 			}
-		} else if donation.SourceType == "hospital" {
-			var hospital []models.Hospital
-			if err := initializers.DB.Where("hospital_id = ?", donation.HospitalID).Find(&hospital).Error; err != nil {
+		case "hospital":
+			var hospitals []models.Hospital
+			if err := initializers.DB.Where("hospital_id = ?", donation.HospitalID).Find(&hospitals).Error; err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch hospital information"})
 				return
 			}
-			if len(hospital) > 0 {
-				facilityName = hospital[0].HospitalName
+			if len(hospitals) > 0 {
+				facilityName = hospitals[0].HospitalName
 			}
+		}
+
+		// Add feedback based on donation status
+		switch donation.Status {
+		case "discarded":
+			donation.Feedback = "Please visit the next health center for consultation."
+		case "Compatible":
+			donation.Feedback = "You have saved a life."
 		}
 
 		enrichedDonations = append(enrichedDonations, gin.H{
@@ -245,7 +238,6 @@ func GetUserDonations(c *gin.Context) {
 
 	// Check for emergencies and add emergency details if any
 	var emergencyDetails []gin.H
-	// Example logic to fetch emergency details
 	var emergencies []models.Emergency
 	if err := initializers.DB.Find(&emergencies).Error; err == nil && len(emergencies) > 0 {
 		for _, emergency := range emergencies {
@@ -263,8 +255,8 @@ func GetUserDonations(c *gin.Context) {
 			"lastName":  user.LastName,
 			"email":     user.Email,
 		},
-		"donations": enrichedDonations,
-		"emergencies": emergencyDetails, // Include emergency details in the response
+		"donations":   enrichedDonations,
+		"emergencies": emergencyDetails,
 	}
 
 	c.JSON(http.StatusOK, response)
