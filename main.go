@@ -20,7 +20,7 @@ func init() {
 func main() {
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3001"}, // Adjust this to your frontend's origin
+		AllowOrigins:     []string{"http://localhost:3001"},
 		AllowMethods:     []string{"POST", "GET", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		AllowCredentials: true,
