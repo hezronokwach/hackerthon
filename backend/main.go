@@ -39,7 +39,7 @@ func main() {
 	router.POST("/regional/update", controllers.RegionUpdate)
 	router.POST("/hospitalDashboard/update", controllers.HospitalUpdate)
 	router.GET("/hospital", controllers.Hospital)
-	router.POST("/hospitalDashboard", controllers.EmergencyRequest)
+	router.POST("/hospitalDashboard/update", controllers.EmergencyRequest)
 	router.POST("/hospitalRequest", controllers.HospitalRequest)
 
 
