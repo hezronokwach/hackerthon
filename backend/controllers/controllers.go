@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"authorization/backend/initializers"
 	"authorization/backend/models"
@@ -156,9 +157,9 @@ func Hospital(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Hospital created successfully"})
 }
+
 func GetUserDonations(c *gin.Context) {
 	userID := c.Param("userID")
-	bloodID := c.Query("bloodID") // Change to Query parameter instead of Path parameter
 
 	// Get user details
 	var user models.User
@@ -171,11 +172,7 @@ func GetUserDonations(c *gin.Context) {
 
 	// Base query with userID
 	query := initializers.DB.Where("user_id = ?", userID)
-	
-	// Add bloodID filter only if it's provided
-	if bloodID != "" {
-		query = query.Where("blood_id = ?", bloodID)
-	}
+
 	// Execute the query
 	if err := query.Find(&donations).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch donations"})
@@ -222,6 +219,21 @@ func GetUserDonations(c *gin.Context) {
 			donation.Feedback = "Please visit the next health center for consultation."
 		case "Compatible":
 			donation.Feedback = "You have saved a life."
+		case "healthy":
+			// Parse the donation date
+			donationTime, err := time.Parse("2006-01-02 15:04:05", donation.DonationDate)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse donation date"})
+				return
+			}
+
+			// Add 3 months to the donation date
+			nextDonationDate := donationTime.AddDate(0, 3, 0)
+
+			// Format the next donation date
+			formattedNextDate := nextDonationDate.Format("2006-01-02")
+
+			donation.Feedback = fmt.Sprintf("You will be eligible to donate blood on %s", formattedNextDate)
 		}
 
 		enrichedDonations = append(enrichedDonations, gin.H{
@@ -241,9 +253,9 @@ func GetUserDonations(c *gin.Context) {
 	if err := initializers.DB.Find(&emergencies).Error; err == nil && len(emergencies) > 0 {
 		for _, emergency := range emergencies {
 			emergencyDetails = append(emergencyDetails, gin.H{
-				"BloodType":     emergency.BloodType,
+				"BloodType":      emergency.BloodType,
 				"RegionLocation": emergency.RegionLocation,
-				"Message":       "Please donate blood at the nearest regional center.",
+				"Message":        "Please donate blood at the nearest regional center.",
 			})
 		}
 	}
