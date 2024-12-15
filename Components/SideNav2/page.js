@@ -26,7 +26,7 @@ export default function SideNav2() {
     
           {/* Message */}
           <div className="hospital-message">
-          Satelitte page
+          Satelitte DashBoard
           </div>
         </div>
       );

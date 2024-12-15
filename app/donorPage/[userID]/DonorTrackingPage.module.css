@@ -136,3 +136,42 @@
       display: none;
   }
 }
+
+.emergencyCard {
+  background-color: #ffcccc; /* Light red background to indicate urgency */
+  border: 2px solid #ff0000; /* Bold red border to reflect emergency */
+  border-radius: 15px;
+  padding: 30px; /* Increase padding for more spacing inside the card */
+  margin-bottom: 20px; /* Space between emergency cards */
+  box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2); /* Add shadow with red tint */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.emergencyCard:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+.emergencyCard p {
+  font-size: 1.2rem; /* Larger text size for better readability */
+  margin: 10px 0; /* Space between lines */
+}
+
+.emergencyCard p strong {
+  font-weight: bold;
+  color: #d80000; /* Darker red for emphasis */
+}
+
+.emergencyCard h3 {
+  font-size: 1.8rem; /* Bold heading for emergency */
+  color: #ff0000; /* Bright red heading */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.emergencyInfo {
+  width: 100%; /* Ensure the emergency section takes full width */
+  margin-bottom: 40px; /* Add spacing between this and other sections */
+}
+
+

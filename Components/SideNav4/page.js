@@ -28,7 +28,7 @@ export default function SideNav4() {
     
           {/* Message */}
           <div className="hospital-message">
-          This is regional full dataset
+          Admin DashBoard
           </div>
         </div>
       );

@@ -27,7 +27,7 @@ export default function SideNav1() {
     
           {/* Message */}
           <div className="hospital-message">
-          This is regional full dataset
+          Regional DashBoard
           </div>
         </div>
       );

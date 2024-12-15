@@ -58,7 +58,9 @@ export default function DonorTrackingPage() {
             {userData && (
                 <div className={styles.userInfo}>
                     <h2>Welcome, {userData.firstName} {userData.lastName}</h2>
-                    <p>{userData.email}</p>
+                    <p>Email: {userData.email}</p>
+                    <p>User ID: {userData.userID}</p>
+
                 </div>
             )}
 

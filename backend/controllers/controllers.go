@@ -265,6 +265,7 @@ func GetUserDonations(c *gin.Context) {
             "firstName": user.FirstName,
             "lastName":  user.LastName,
             "email":     user.Email,
+			"userID": user.UserID,
         },
         "donations":   enrichedDonations,
         "emergencies": emergencyDetails,

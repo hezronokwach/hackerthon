@@ -1,8 +1,15 @@
 export default function SatelitteDashboard(){
-    return(
-        <div>
-             
-            <h1>Satelitte page</h1>
-        </div>
-    )
+    return (
+        <h1 style={{
+            fontWeight: "bold",
+            textAlign: "center",
+            fontSize: "2.5rem",
+            position: "absolute",
+            top: "10%",
+            left: "50%",
+            transform: "translateX(-50%)",
+        }}>
+            Satelitte DashBoard
+        </h1>
+    );
  }
