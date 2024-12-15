@@ -25,13 +25,11 @@ export default function RootLayout({ children }) {
         <head>
           {/* Add global meta tags, link to stylesheets, etc. */}
         </head>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Navbar />
-          <main>{children}</main>
-          <Footer/>
-        </body>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
+  <Navbar />
+  <main className="flex-grow flex-1">{children}</main>
+  <Footer />
+</body>
       </html>
     </>
   );

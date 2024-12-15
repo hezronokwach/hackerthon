@@ -62,6 +62,20 @@ export default function DonorTrackingPage() {
                 </div>
             )}
 
+{emergencies.length > 0 && (
+            <div className={styles.emergencyInfo}>
+                <h3>Emergency Requests</h3>
+                {emergencies.map((emergency, index) => (
+                    <div key={index} className={styles.emergencyCard}>
+                        <p><strong>Blood Type:</strong> {emergency.BloodType}</p>
+                        <p><strong>Region Location:</strong> {emergency.RegionLocation}</p>
+                        <p><strong></strong> {emergency.Message}</p>
+
+                    </div>
+                ))}
+            </div>
+        )}
+
             <div className={styles.donationProgressContainer}>
                 <div className={styles.donationProgressLine}></div>
                 <div className={styles.donationsList}>
@@ -69,22 +83,41 @@ export default function DonorTrackingPage() {
                         <div key={index} className={getDonationCardClass(donation, index)}>
                             <div className={styles.donationStageIndicator}>{index + 1}</div>
                             <h4>Donation Details</h4>
-                            <p>
-                                <span>Date:</span>
-                                <span>{donation.DonationDate}</span>
-                            </p>
-                            <p>
-                                <span>Blood Type:</span>
-                                <span>{donation.BloodType}</span>
-                            </p>
-                            <p>
-                                <span>Status:</span>
-                                <span>{donation.Status}</span>
-                            </p>
-                            <p>
-                                <span>Facility:</span>
-                                <span>{donation.FacilityName}</span>
-                            </p>
+
+                            {donation.DonationDate && (
+                                <p>
+                                    <span>Date:</span>
+                                    <span>{donation.DonationDate}</span>
+                                </p>
+                            )}
+
+                            {donation.BloodType && (
+                                <p>
+                                    <span>Blood Type:</span>
+                                    <span>{donation.BloodType}</span>
+                                </p>
+                            )}
+
+                            {donation.Status && (
+                                <p>
+                                    <span>Status:</span>
+                                    <span>{donation.Status}</span>
+                                </p>
+                            )}
+
+                            {donation.FacilityName && (
+                                <p>
+                                    <span>Facility:</span>
+                                    <span>{donation.FacilityName}</span>
+                                </p>
+                            )}
+
+                            {donation.Feedback && (
+                                <p>
+                                    <span>Feedback:</span>
+                                    <span>{donation.Feedback}</span>
+                                </p>
+                            )}
                         </div>
                     ))}
                 </div>

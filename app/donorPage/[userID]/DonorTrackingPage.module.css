@@ -1,7 +1,7 @@
 .donorPage {
-  max-width: 900px;
+  max-width: 1000px; /* Increase max-width to make the content wider */
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px; /* Increased padding for more space around the content */
   font-family: 'Inter', 'Arial', sans-serif;
   display: flex;
   flex-direction: column;
@@ -18,19 +18,30 @@
   width: 100%;
 }
 
+.userInfo h2 {
+  font-size: 1.8rem; /* Increase heading size */
+  margin-bottom: 10px; /* Adjust margin to fit the larger text */
+}
+
+.userInfo p {
+  font-size: 1.1rem; /* Increase paragraph text size */
+  color: #333;
+}
+
+
 .donationProgressContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 40px; /* Increased margin */
 }
 
 .donationProgressLine {
   position: absolute;
-  height: 4px;
+  height: 6px; /* Slightly thicker progress line */
   background-color: #e0e0e0;
-  width: 70%;
+  width: 80%; /* Increased width for more progress space */
   z-index: 1;
 }
 
@@ -38,21 +49,22 @@
   position: relative;
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 40px; /* Increased gap between the cards */
   width: 100%;
   z-index: 2;
 }
 
 .donationCard {
-  min-width: 250px;
+  min-width: 300px; /* Increased min-width for larger cards */
   background-color: #ffffff;
   border-radius: 15px;
-  padding: 25px;
+  padding: 30px; /* Increased padding inside cards */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   position: relative;
   transition: all 0.3s ease;
   border: 1px solid #e0e0e0;
   z-index: 3;
+  font-size: 1.1rem; /* Increased font size for better readability */
 }
 
 .donationCard.active {
@@ -67,11 +79,11 @@
 
 .donationStageIndicator {
   position: absolute;
-  top: -25px;
+  top: -30px; /* Adjusted position to match larger cards */
   left: 50%;
   transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
+  width: 50px; /* Increased size of the stage indicator */
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -94,13 +106,13 @@
 
 .donationCard h4 {
   color: #333;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
+  margin-bottom: 20px; /* Increased margin */
+  padding-bottom: 15px; /* Increased padding for spacing */
   border-bottom: 2px solid #e0e0e0;
 }
 
 .donationCard p {
-  margin: 10px 0;
+  margin: 15px 0; /* Increased margin for spacing */
   display: flex;
   justify-content: space-between;
 }
